@@ -1,6 +1,5 @@
 package com.elbar.cv_gen.configs.security;
 
-import com.elbar.cv_gen.configs.encryption.PasswordEncoderConfigurer;
 import com.elbar.cv_gen.configs.filter.CustomAuthenticationFilter;
 import com.elbar.cv_gen.utils.BaseUtils;
 import lombok.RequiredArgsConstructor;
@@ -14,10 +13,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -42,16 +39,6 @@ public class SecurityConfigurer {
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(encoderConfigurer);
         return new ProviderManager(authProvider);
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return new InMemoryUserDetailsManager(
-                User.withUsername("user")
-                        .password("{noop}password")
-                        .authorities("USER")
-                        .build()
-        );
     }
 
     @Bean
