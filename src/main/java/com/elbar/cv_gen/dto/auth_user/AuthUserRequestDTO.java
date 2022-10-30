@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class AuthUseRequestDTO {
+public class AuthUserRequestDTO {
     @NotBlank
     private String phone;
     @NotBlank

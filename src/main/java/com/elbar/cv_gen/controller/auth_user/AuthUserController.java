@@ -4,20 +4,15 @@ import com.elbar.cv_gen.controller.AbstractController;
 import com.elbar.cv_gen.controller.GenericCUDController;
 import com.elbar.cv_gen.controller.GenericGLController;
 import com.elbar.cv_gen.criteria.auth_user.AuthUserCriteria;
-import com.elbar.cv_gen.dto.auth_user.AuthUserCreateDTO;
-import com.elbar.cv_gen.dto.auth_user.AuthUserDetailDTO;
-import com.elbar.cv_gen.dto.auth_user.AuthUserGetDTO;
-import com.elbar.cv_gen.dto.auth_user.AuthUserUpdateDTO;
+import com.elbar.cv_gen.dto.auth_user.*;
 import com.elbar.cv_gen.response.Data;
 import com.elbar.cv_gen.service.auth_user.AuthUserService;
 import com.elbar.cv_gen.utils.BaseUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -56,6 +51,11 @@ public class AuthUserController extends AbstractController<AuthUserService>
     @RequestMapping(value = "detail/{id}", method = RequestMethod.GET)
     public ResponseEntity<Data<AuthUserDetailDTO>> detail(@PathVariable Integer id) {
         return new ResponseEntity<>(new Data<>(service.detail(id)), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "login", method = RequestMethod.POST)
+    public ResponseEntity<Data<Object>> detail(@Valid @RequestBody AuthUserRequestDTO dto) {
+        return new ResponseEntity<>(new Data<>(service.login(dto)), HttpStatus.OK);
     }
 
     @Override

@@ -6,10 +6,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface AuthUserRepository extends JpaRepository<AuthUserEntity, Integer>,
         JpaSpecificationExecutor<AuthUserEntity>, BaseRepository {
 
     boolean existsByPhoneEquals(String phone);
+
+    Optional<AuthUserEntity> findByPhoneEquals(String phone);
 
 }

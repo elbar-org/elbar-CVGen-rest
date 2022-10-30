@@ -35,4 +35,10 @@ public class AuthUserValidator extends AbstractValidator<AuthUserCreateDTO, Auth
         }
     }
 
+    public void validOnPhone(String phone) throws RuntimeException {
+        if (Objects.isNull(phone)) {
+            throw new InvalidValidationException("PHONE is null");
+        }
+    }
+
 }

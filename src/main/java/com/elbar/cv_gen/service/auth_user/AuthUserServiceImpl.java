@@ -4,10 +4,7 @@ import com.elbar.cv_gen.configs.encryption.PasswordEncoderConfigurer;
 import com.elbar.cv_gen.criteria.auth_user.AuthUserBetweenCriteria;
 import com.elbar.cv_gen.criteria.auth_user.AuthUserCriteria;
 import com.elbar.cv_gen.criteria.auth_user.AuthUserSearchCriteria;
-import com.elbar.cv_gen.dto.auth_user.AuthUserCreateDTO;
-import com.elbar.cv_gen.dto.auth_user.AuthUserDetailDTO;
-import com.elbar.cv_gen.dto.auth_user.AuthUserGetDTO;
-import com.elbar.cv_gen.dto.auth_user.AuthUserUpdateDTO;
+import com.elbar.cv_gen.dto.auth_user.*;
 import com.elbar.cv_gen.entity.auth_user.AuthUserEntity;
 import com.elbar.cv_gen.enums.role.RolesEnum;
 import com.elbar.cv_gen.enums.status.StatusEnum;
@@ -16,9 +13,16 @@ import com.elbar.cv_gen.repository.auth_user.AuthUserRepository;
 import com.elbar.cv_gen.service.AbstractService;
 import com.elbar.cv_gen.specification.auth_user.AuthUserBetweenSpecification;
 import com.elbar.cv_gen.specification.auth_user.AuthUserSearchSpecification;
+import com.elbar.cv_gen.utils.BaseUtils;
 import com.elbar.cv_gen.validator.auth_user.AuthUserValidator;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
@@ -90,6 +94,13 @@ public class AuthUserServiceImpl extends AbstractService<AuthUserValidator, Auth
     }
 
     @Override
+    public Object login(AuthUserRequestDTO dto) {
+        HttpEntity<AuthUserRequestDTO> entity = new HttpEntity<>(dto);
+        ResponseEntity<Object> exchange = BaseUtils.REST_TEMPLATE.exchange("http://localhost:8080/api/v1/login", HttpMethod.POST, entity, Object.class);
+        return exchange.getBody();
+    }
+
+    @Override
     public List<AuthUserGetDTO> list(AuthUserCriteria criteria) {
         return repository.findAll(PageRequest.of(criteria.getPage(), criteria.getSize(),
                         criteria.getSort(), criteria.getFieldsEnum().getValue()))
@@ -117,5 +128,23 @@ public class AuthUserServiceImpl extends AbstractService<AuthUserValidator, Auth
                 .stream()
                 .map(mapper::fromGetDTO)
                 .toList();
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        validator.validOnPhone(username);
+        AuthUserEntity entity = repository.findByPhoneEquals(username)
+                .orElseThrow(() -> {
+                    throw new NotFoundException("User not found");
+                });
+        return User.builder()
+                .username(entity.getPhone())
+                .password(entity.getPassword())
+                .authorities(entity.getRole().getValue())
+                .accountLocked(false)
+                .accountExpired(false)
+                .disabled(false)
+                .credentialsExpired(false)
+                .build();
     }
 }

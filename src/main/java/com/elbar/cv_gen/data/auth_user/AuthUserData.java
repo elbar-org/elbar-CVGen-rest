@@ -1,5 +1,6 @@
 package com.elbar.cv_gen.data.auth_user;
 
+import com.elbar.cv_gen.configs.encryption.PasswordEncoderConfigurer;
 import com.elbar.cv_gen.entity.auth_user.AuthUserEntity;
 import com.elbar.cv_gen.enums.language.LanguagesEnum;
 import com.elbar.cv_gen.enums.role.RolesEnum;
@@ -28,7 +29,8 @@ public class AuthUserData implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        /*ObjectMapper objectMapper = new ObjectMapper();
+        /*PasswordEncoderConfigurer encoderConfigurer = new PasswordEncoderConfigurer();
+        ObjectMapper objectMapper = new ObjectMapper();
         TypeReference<List<AuthUserEntity>> reference = new TypeReference<>() {
         };
 
@@ -36,6 +38,7 @@ public class AuthUserData implements CommandLineRunner {
         List<AuthUserEntity> list = objectMapper.readValue(inputStream, reference);
 
         list.forEach((user) -> {
+            user.setPassword(encoderConfigurer.encoder().encode(user.getPassword()));
             user.setStatus(StatusEnum.findAny());
             user.setRole(RolesEnum.findAny());
             user.setLanguage(LanguagesEnum.findAny());
