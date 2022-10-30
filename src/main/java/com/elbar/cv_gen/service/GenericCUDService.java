@@ -6,9 +6,9 @@ import com.elbar.cv_gen.dto.GenericDTO;
 import java.io.Serializable;
 
 public interface GenericCUDService<CD extends BaseDTO, UD extends GenericDTO, K extends Serializable> {
-    Void create(CD dto);
+    void create(CD dto);
 
-    Void update(UD dto);
+    void update(UD dto);
 
-    Void delete(K id);
+    void delete(K id);
 }

@@ -7,6 +7,7 @@ import com.elbar.cv_gen.enums.status.StatusEnum;
 import lombok.*;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -25,6 +26,6 @@ public class AuthUserDetailDTO extends GenericDTO {
     private Integer freeChance;
     private Instant lastLoginAt;
     private Integer loginTryCount;
-    private Instant createdAt;
-    private Instant updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

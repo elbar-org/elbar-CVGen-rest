@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Arrays;
+import java.util.Random;
 
 @Getter
 @RequiredArgsConstructor
@@ -16,5 +17,10 @@ public enum LanguagesEnum {
     public static boolean hasLanguageIgnoreCase(String value) {
         return Arrays.stream(values())
                 .anyMatch(f -> f.value.equalsIgnoreCase(value));
+    }
+
+    public static LanguagesEnum findAny() {
+        return Arrays.asList(values())
+                .get(new Random().nextInt(values().length));
     }
 }

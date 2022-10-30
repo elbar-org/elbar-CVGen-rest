@@ -15,9 +15,7 @@ import javax.persistence.*;
 @Table(name = "auth_card")
 public class AuthCardEntity extends Auditable {
     @Column(name = "user_id", nullable = false)
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private AuthUserEntity userId;
+    private Integer userId;
 
     @Column(name = "card_type", nullable = false)
     private String cardType;

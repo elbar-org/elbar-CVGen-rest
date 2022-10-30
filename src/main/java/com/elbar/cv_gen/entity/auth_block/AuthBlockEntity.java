@@ -17,16 +17,12 @@ import java.time.Instant;
 @Table(name = "auth_block")
 public class AuthBlockEntity extends Auditable {
     @Column(name = "user_id", nullable = false)
-    @OneToOne(mappedBy = "authUserEntity")
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private AuthUserEntity userId;
+    private Integer userId;
 
     @Column(name = "duration", nullable = false)
     private Instant duration;
 
     @Column(name = "blocked_for", nullable = false)
-    @OneToOne(mappedBy = "blockedFor")
-    @JoinColumn(name = "user_id", referencedColumnName = "code")
-    private BlockedForEntity blockedFor;
+    private String blockedFor;
 
 }

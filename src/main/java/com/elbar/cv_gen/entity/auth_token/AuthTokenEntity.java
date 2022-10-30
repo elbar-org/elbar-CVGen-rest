@@ -16,9 +16,7 @@ import java.time.Instant;
 @Table(name = "auth_token")
 public class AuthTokenEntity extends Auditable {
     @Column(name = "user_id", nullable = false)
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private AuthUserEntity userId;
+    private Integer userId;
 
     @Column(name = "duration", nullable = false)
     private Instant duration;

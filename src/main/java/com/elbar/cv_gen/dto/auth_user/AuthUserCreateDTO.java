@@ -21,7 +21,7 @@ public class AuthUserCreateDTO implements BaseDTO {
     @Size(min = 3, max = 120)
     private String lastName;
     @NotBlank
-    @Size(min = 11, max = 11)
+    @Size(min = 13, max = 13)
     // TODO write annotation check phone number
     private String phone;
     @NotBlank
