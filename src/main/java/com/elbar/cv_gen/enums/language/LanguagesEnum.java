@@ -2,6 +2,7 @@ package com.elbar.cv_gen.enums.language;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.webjars.NotFoundException;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -22,5 +23,12 @@ public enum LanguagesEnum {
     public static LanguagesEnum findAny() {
         return Arrays.asList(values())
                 .get(new Random().nextInt(values().length));
+    }
+
+    public static LanguagesEnum getEqual(String var) {
+        return Arrays.stream(values())
+                .filter(f -> f.value.equals(var))
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException("Language not found"));
     }
 }

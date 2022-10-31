@@ -1,6 +1,7 @@
 package com.elbar.cv_gen.configs.security;
 
 import com.elbar.cv_gen.configs.filter.CustomAuthenticationFilter;
+import com.elbar.cv_gen.configs.filter.CustomAuthorizationFilter;
 import com.elbar.cv_gen.utils.BaseUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +17,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -51,6 +53,7 @@ public class SecurityConfigurer {
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilter(new CustomAuthenticationFilter(authManager()))
+                .addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 

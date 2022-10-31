@@ -1,9 +1,9 @@
 package com.elbar.cv_gen.service.auth_user;
 
 import com.elbar.cv_gen.configs.encryption.PasswordEncoderConfigurer;
-import com.elbar.cv_gen.criteria.auth_user.AuthUserBetweenCriteria;
+import com.elbar.cv_gen.criteria.BetweenCriteria;
+import com.elbar.cv_gen.criteria.SearchCriteria;
 import com.elbar.cv_gen.criteria.auth_user.AuthUserCriteria;
-import com.elbar.cv_gen.criteria.auth_user.AuthUserSearchCriteria;
 import com.elbar.cv_gen.dto.auth_user.*;
 import com.elbar.cv_gen.entity.auth_user.AuthUserEntity;
 import com.elbar.cv_gen.enums.role.RolesEnum;
@@ -111,7 +111,7 @@ public class AuthUserServiceImpl extends AbstractService<AuthUserValidator, Auth
 
 
     @Override
-    public List<AuthUserGetDTO> list_with_search(AuthUserSearchCriteria criteria) {
+    public List<AuthUserGetDTO> list_with_search(SearchCriteria criteria) {
         return repository.findAll(new AuthUserSearchSpecification(criteria),
                         PageRequest.of(criteria.getPage(),
                                 criteria.getSize()))
@@ -121,7 +121,7 @@ public class AuthUserServiceImpl extends AbstractService<AuthUserValidator, Auth
     }
 
     @Override
-    public List<AuthUserGetDTO> list_with_between(AuthUserBetweenCriteria criteria) {
+    public List<AuthUserGetDTO> list_with_between(BetweenCriteria criteria) {
         return repository.findAll(new AuthUserBetweenSpecification(criteria),
                         PageRequest.of(criteria.getPage(),
                                 criteria.getSize()))

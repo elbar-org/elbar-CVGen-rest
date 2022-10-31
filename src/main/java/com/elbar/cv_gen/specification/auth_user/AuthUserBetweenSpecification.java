@@ -1,6 +1,6 @@
 package com.elbar.cv_gen.specification.auth_user;
 
-import com.elbar.cv_gen.criteria.auth_user.AuthUserBetweenCriteria;
+import com.elbar.cv_gen.criteria.BetweenCriteria;
 import com.elbar.cv_gen.entity.auth_user.AuthUserEntity;
 import com.elbar.cv_gen.specification.AbstractSpecification;
 
@@ -9,9 +9,9 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-public class AuthUserBetweenSpecification extends AbstractSpecification<AuthUserBetweenCriteria, AuthUserEntity> {
+public class AuthUserBetweenSpecification extends AbstractSpecification<BetweenCriteria, AuthUserEntity> {
 
-    public AuthUserBetweenSpecification(AuthUserBetweenCriteria criteria) {
+    public AuthUserBetweenSpecification(BetweenCriteria criteria) {
         super(criteria);
     }
 
