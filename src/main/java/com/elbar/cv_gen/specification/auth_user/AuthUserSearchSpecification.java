@@ -1,6 +1,6 @@
 package com.elbar.cv_gen.specification.auth_user;
 
-import com.elbar.cv_gen.criteria.auth_user.AuthUserSearchCriteria;
+import com.elbar.cv_gen.criteria.SearchCriteria;
 import com.elbar.cv_gen.entity.auth_user.AuthUserEntity;
 import com.elbar.cv_gen.specification.AbstractSpecification;
 
@@ -9,9 +9,9 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-public class AuthUserSearchSpecification extends AbstractSpecification<AuthUserSearchCriteria, AuthUserEntity> {
+public class AuthUserSearchSpecification extends AbstractSpecification<SearchCriteria, AuthUserEntity> {
 
-    public AuthUserSearchSpecification(AuthUserSearchCriteria criteria) {
+    public AuthUserSearchSpecification(SearchCriteria criteria) {
         super(criteria);
     }
 

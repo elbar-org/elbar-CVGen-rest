@@ -3,6 +3,9 @@ package com.elbar.cv_gen.controller.auth_user;
 import com.elbar.cv_gen.controller.AbstractController;
 import com.elbar.cv_gen.controller.GenericCUDController;
 import com.elbar.cv_gen.controller.GenericGLController;
+import com.elbar.cv_gen.controller.GenericSpecificationController;
+import com.elbar.cv_gen.criteria.BetweenCriteria;
+import com.elbar.cv_gen.criteria.SearchCriteria;
 import com.elbar.cv_gen.criteria.auth_user.AuthUserCriteria;
 import com.elbar.cv_gen.dto.auth_user.*;
 import com.elbar.cv_gen.response.Data;
@@ -19,7 +22,8 @@ import java.util.List;
 @RequestMapping(value = BaseUtils.PATH + "/auth_user/*")
 public class AuthUserController extends AbstractController<AuthUserService>
         implements GenericCUDController<AuthUserCreateDTO, AuthUserUpdateDTO, Integer>,
-        GenericGLController<AuthUserGetDTO, AuthUserCriteria, Integer> {
+        GenericGLController<AuthUserGetDTO, AuthUserCriteria, Integer>,
+        GenericSpecificationController<SearchCriteria, BetweenCriteria, AuthUserGetDTO> {
 
     public AuthUserController(AuthUserService service) {
         super(service);
@@ -61,5 +65,15 @@ public class AuthUserController extends AbstractController<AuthUserService>
     @Override
     public ResponseEntity<Data<List<AuthUserGetDTO>>> list(AuthUserCriteria criteria) {
         return new ResponseEntity<>(new Data<>(service.list(criteria)), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Data<List<AuthUserGetDTO>>> list_with_search(SearchCriteria criteria) {
+        return new ResponseEntity<>(new Data<>(service.list_with_search(criteria)), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Data<List<AuthUserGetDTO>>> list_with_between(BetweenCriteria criteria) {
+        return new ResponseEntity<>(new Data<>(service.list_with_between(criteria)), HttpStatus.OK);
     }
 }
