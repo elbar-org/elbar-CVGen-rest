@@ -1,20 +1,10 @@
 package com.elbar.cv_gen.data.auth_user;
 
-import com.elbar.cv_gen.configs.encryption.PasswordEncoderConfigurer;
-import com.elbar.cv_gen.entity.auth_user.AuthUserEntity;
-import com.elbar.cv_gen.enums.language.LanguagesEnum;
-import com.elbar.cv_gen.enums.role.RolesEnum;
-import com.elbar.cv_gen.enums.status.StatusEnum;
-import com.elbar.cv_gen.repository.auth_user.AuthUserRepository;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.elbar.cv_gen.repository.auth.auth_user.AuthUserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-
-import java.io.InputStream;
-import java.util.List;
 
 @Component
 @Order(1)

@@ -1,10 +1,10 @@
 package com.elbar.cv_gen.specification.auth_user;
 
 import com.elbar.cv_gen.criteria.SearchCriteria;
-import com.elbar.cv_gen.entity.auth_user.AuthUserEntity;
-import com.elbar.cv_gen.enums.language.LanguagesEnum;
-import com.elbar.cv_gen.enums.role.RolesEnum;
-import com.elbar.cv_gen.enums.status.StatusEnum;
+import com.elbar.cv_gen.entity.auth.auth_user.AuthUserEntity;
+import com.elbar.cv_gen.enums.auth.language.LanguagesEnum;
+import com.elbar.cv_gen.enums.auth.role.RolesEnum;
+import com.elbar.cv_gen.enums.auth.status.StatusEnum;
 import com.elbar.cv_gen.specification.AbstractSpecification;
 
 import javax.persistence.criteria.CriteriaBuilder;
