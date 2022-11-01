@@ -32,19 +32,25 @@ public class AuthUserController extends AbstractController<AuthUserService>
     @Override
     public ResponseEntity<Data<String>> create(AuthUserCreateDTO DTO) {
         service.create(DTO);
-        return new ResponseEntity<>(new Data<>("Successfully Created - User"), HttpStatus.CREATED);
+        return new ResponseEntity<>(new Data<>("Successfully Created - Auth User"), HttpStatus.CREATED);
     }
 
     @Override
     public ResponseEntity<Data<String>> update(AuthUserUpdateDTO DTO) {
         service.update(DTO);
-        return new ResponseEntity<>(new Data<>("Successfully Updated - User"), HttpStatus.OK);
+        return new ResponseEntity<>(new Data<>("Successfully Updated - Auth User"), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "changePassword", method = RequestMethod.PUT)
+    public ResponseEntity<Data<String>> changePassword(@RequestBody AuthUserChangePasswordDTO dto) {
+        service.changePassword(dto);
+        return new ResponseEntity<>(new Data<>("Successfully Change Password - Auth User"), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<Data<String>> delete(Integer id) {
         service.delete(id);
-        return new ResponseEntity<>(new Data<>("Successfully Deleted - User"), HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(new Data<>("Successfully Deleted - Auth User"), HttpStatus.NO_CONTENT);
     }
 
     @Override

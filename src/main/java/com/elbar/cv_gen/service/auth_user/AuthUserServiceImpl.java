@@ -8,6 +8,7 @@ import com.elbar.cv_gen.dto.auth_user.*;
 import com.elbar.cv_gen.entity.auth_user.AuthUserEntity;
 import com.elbar.cv_gen.enums.role.RolesEnum;
 import com.elbar.cv_gen.enums.status.StatusEnum;
+import com.elbar.cv_gen.exception.exception.NotFoundException;
 import com.elbar.cv_gen.mapper.auth_user.AuthUserMapper;
 import com.elbar.cv_gen.repository.auth_user.AuthUserRepository;
 import com.elbar.cv_gen.service.AbstractService;
@@ -24,7 +25,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.webjars.NotFoundException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,8 +32,10 @@ import java.util.List;
 @Service
 public class AuthUserServiceImpl extends AbstractService<AuthUserValidator, AuthUserMapper, AuthUserRepository> implements AuthUserService {
 
-    public AuthUserServiceImpl(AuthUserValidator validator, AuthUserMapper mapper, AuthUserRepository repository) {
+    private final PasswordEncoderConfigurer encoderConfigurer;
+    public AuthUserServiceImpl(AuthUserValidator validator, AuthUserMapper mapper, AuthUserRepository repository, PasswordEncoderConfigurer encoderConfigurer) {
         super(validator, mapper, repository);
+        this.encoderConfigurer = encoderConfigurer;
     }
 
     @Override
@@ -98,6 +100,21 @@ public class AuthUserServiceImpl extends AbstractService<AuthUserValidator, Auth
         HttpEntity<AuthUserRequestDTO> entity = new HttpEntity<>(dto);
         ResponseEntity<Object> exchange = BaseUtils.REST_TEMPLATE.exchange("http://localhost:8080/api/v1/login", HttpMethod.POST, entity, Object.class);
         return exchange.getBody();
+    }
+
+    @Override
+    public void changePassword(AuthUserChangePasswordDTO dto) {
+        AuthUserEntity entity = repository.findById(dto.getUserId())
+                .orElseThrow(() -> {
+                    throw new NotFoundException("Auth User not found");
+                });
+        if (!encoderConfigurer.encoder().matches(dto.getOldPwd(), entity.getPassword())) {
+            throw new RuntimeException("Invalid Password!");
+        }
+        entity.setPassword(encoderConfigurer.encoder().encode(dto.getNewPwd()));
+        entity.setUpdatedAt(LocalDateTime.now());
+        entity.setUpdatedBy(dto.getUserId());
+        repository.save(entity);
     }
 
     @Override
