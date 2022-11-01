@@ -2,6 +2,8 @@ package com.elbar.cv_gen.configs.security;
 
 import com.elbar.cv_gen.configs.filter.CustomAuthenticationFilter;
 import com.elbar.cv_gen.configs.filter.CustomAuthorizationFilter;
+import com.elbar.cv_gen.repository.auth_user.AuthUserRepository;
+import com.elbar.cv_gen.service.auth_token.AuthTokenService;
 import com.elbar.cv_gen.utils.BaseUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -27,6 +29,8 @@ public class SecurityConfigurer {
 
     private final PasswordEncoder encoderConfigurer;
     private final UserDetailsService userDetailsService;
+    private final AuthTokenService tokenService;
+    private final AuthUserRepository userRepository;
 
     public static final String[] WHITE_LIST = {
             "/swagger-ui/**",
@@ -52,7 +56,7 @@ public class SecurityConfigurer {
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilter(new CustomAuthenticationFilter(authManager()))
+                .addFilter(new CustomAuthenticationFilter(authManager(), tokenService, userRepository))
                 .addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
