@@ -6,7 +6,6 @@ import lombok.*;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.time.Instant;
 
 @Getter
 @Setter
@@ -23,6 +22,6 @@ public class BlockedForEntity extends Auditable {
     private String name;
 
     @Column(name = "duration", nullable = false)
-    private Instant duration;
+    private Integer minDuration;
 
 }

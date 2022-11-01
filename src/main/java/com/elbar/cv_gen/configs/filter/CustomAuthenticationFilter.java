@@ -75,6 +75,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
         tokenService.create(new AuthTokenCreateDTO(authUser.getId(),
                 30, accessToken, TokenType.ACCESS));
+
         tokenService.create(new AuthTokenCreateDTO(authUser.getId(),
                 (3 * 24 * 60), refreshToken, TokenType.REFRESH));
 
