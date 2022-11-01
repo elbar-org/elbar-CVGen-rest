@@ -1,7 +1,8 @@
 package com.elbar.cv_gen.specification.auth_user;
 
 import com.elbar.cv_gen.criteria.BetweenCriteria;
-import com.elbar.cv_gen.entity.auth_user.AuthUserEntity;
+import com.elbar.cv_gen.criteria.auth_user.AuthUserBetweenCriteria;
+import com.elbar.cv_gen.entity.auth.auth_user.AuthUserEntity;
 import com.elbar.cv_gen.specification.AbstractSpecification;
 
 import javax.persistence.criteria.CriteriaBuilder;

@@ -39,7 +39,8 @@ public class OpenAPIConfigurer {
     }
 
     private List<SecurityRequirement> getSecurityRequirement() {
-        SecurityRequirement requirement = new SecurityRequirement();
+        SecurityRequirement requirement
+                = new SecurityRequirement();
         requirement.addList(SECURITY_SCHEMA_NAME);
         return List.of(requirement);
     }

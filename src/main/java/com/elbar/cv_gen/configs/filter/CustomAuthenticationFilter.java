@@ -1,14 +1,14 @@
 package com.elbar.cv_gen.configs.filter;
 
 import com.auth0.jwt.JWT;
-import com.elbar.cv_gen.dto.auth_token.AuthTokenCreateDTO;
-import com.elbar.cv_gen.dto.auth_user.AuthUserRequestDTO;
-import com.elbar.cv_gen.entity.auth_user.AuthUserEntity;
-import com.elbar.cv_gen.enums.token.TokenType;
-import com.elbar.cv_gen.repository.auth_user.AuthUserRepository;
+import com.elbar.cv_gen.dto.auth.auth_token.AuthTokenCreateDTO;
+import com.elbar.cv_gen.dto.auth.auth_user.AuthUserRequestDTO;
+import com.elbar.cv_gen.entity.auth.auth_user.AuthUserEntity;
+import com.elbar.cv_gen.enums.auth.token.TokenType;
+import com.elbar.cv_gen.repository.auth.auth_user.AuthUserRepository;
 import com.elbar.cv_gen.response.ApplicationError;
 import com.elbar.cv_gen.response.Data;
-import com.elbar.cv_gen.service.auth_token.AuthTokenService;
+import com.elbar.cv_gen.service.auth.auth_token.AuthTokenService;
 import com.elbar.cv_gen.utils.jwt.JWTUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
