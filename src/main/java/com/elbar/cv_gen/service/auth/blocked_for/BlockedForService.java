@@ -12,4 +12,5 @@ public interface BlockedForService extends GenericGLService<BlockedForGetDTO, Bl
 
     void delete(Integer id);
 
+    Integer blockCodeGetMin(String code);
 }
