@@ -3,6 +3,9 @@ package com.elbar.cv_gen.controller.auth_user;
 import com.elbar.cv_gen.controller.AbstractController;
 import com.elbar.cv_gen.controller.GenericCUDController;
 import com.elbar.cv_gen.controller.GenericGLController;
+import com.elbar.cv_gen.controller.GenericSpecificationController;
+import com.elbar.cv_gen.criteria.BetweenCriteria;
+import com.elbar.cv_gen.criteria.SearchCriteria;
 import com.elbar.cv_gen.criteria.auth_user.AuthUserCriteria;
 import com.elbar.cv_gen.dto.auth_user.*;
 import com.elbar.cv_gen.response.Data;
@@ -19,7 +22,8 @@ import java.util.List;
 @RequestMapping(value = BaseUtils.PATH + "/auth_user/*")
 public class AuthUserController extends AbstractController<AuthUserService>
         implements GenericCUDController<AuthUserCreateDTO, AuthUserUpdateDTO, Integer>,
-        GenericGLController<AuthUserGetDTO, AuthUserCriteria, Integer> {
+        GenericGLController<AuthUserGetDTO, AuthUserCriteria, Integer>,
+        GenericSpecificationController<SearchCriteria, BetweenCriteria, AuthUserGetDTO> {
 
     public AuthUserController(AuthUserService service) {
         super(service);
@@ -28,19 +32,25 @@ public class AuthUserController extends AbstractController<AuthUserService>
     @Override
     public ResponseEntity<Data<String>> create(AuthUserCreateDTO DTO) {
         service.create(DTO);
-        return new ResponseEntity<>(new Data<>("Successfully Created - User"), HttpStatus.CREATED);
+        return new ResponseEntity<>(new Data<>("Successfully Created - Auth User"), HttpStatus.CREATED);
     }
 
     @Override
     public ResponseEntity<Data<String>> update(AuthUserUpdateDTO DTO) {
         service.update(DTO);
-        return new ResponseEntity<>(new Data<>("Successfully Updated - User"), HttpStatus.OK);
+        return new ResponseEntity<>(new Data<>("Successfully Updated - Auth User"), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "changePassword", method = RequestMethod.PUT)
+    public ResponseEntity<Data<String>> changePassword(@RequestBody AuthUserChangePasswordDTO dto) {
+        service.changePassword(dto);
+        return new ResponseEntity<>(new Data<>("Successfully Change Password - Auth User"), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<Data<String>> delete(Integer id) {
         service.delete(id);
-        return new ResponseEntity<>(new Data<>("Successfully Deleted - User"), HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(new Data<>("Successfully Deleted - Auth User"), HttpStatus.NO_CONTENT);
     }
 
     @Override
@@ -61,5 +71,15 @@ public class AuthUserController extends AbstractController<AuthUserService>
     @Override
     public ResponseEntity<Data<List<AuthUserGetDTO>>> list(AuthUserCriteria criteria) {
         return new ResponseEntity<>(new Data<>(service.list(criteria)), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Data<List<AuthUserGetDTO>>> list_with_search(SearchCriteria criteria) {
+        return new ResponseEntity<>(new Data<>(service.list_with_search(criteria)), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Data<List<AuthUserGetDTO>>> list_with_between(BetweenCriteria criteria) {
+        return new ResponseEntity<>(new Data<>(service.list_with_between(criteria)), HttpStatus.OK);
     }
 }

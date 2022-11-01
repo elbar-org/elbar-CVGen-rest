@@ -1,13 +1,14 @@
 package com.elbar.cv_gen.service.auth_user;
 
 import com.elbar.cv_gen.configs.encryption.PasswordEncoderConfigurer;
-import com.elbar.cv_gen.criteria.auth_user.AuthUserBetweenCriteria;
+import com.elbar.cv_gen.criteria.BetweenCriteria;
+import com.elbar.cv_gen.criteria.SearchCriteria;
 import com.elbar.cv_gen.criteria.auth_user.AuthUserCriteria;
-import com.elbar.cv_gen.criteria.auth_user.AuthUserSearchCriteria;
 import com.elbar.cv_gen.dto.auth_user.*;
 import com.elbar.cv_gen.entity.auth_user.AuthUserEntity;
 import com.elbar.cv_gen.enums.role.RolesEnum;
 import com.elbar.cv_gen.enums.status.StatusEnum;
+import com.elbar.cv_gen.exception.exception.NotFoundException;
 import com.elbar.cv_gen.mapper.auth_user.AuthUserMapper;
 import com.elbar.cv_gen.repository.auth_user.AuthUserRepository;
 import com.elbar.cv_gen.service.AbstractService;
@@ -24,7 +25,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.webjars.NotFoundException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,8 +32,10 @@ import java.util.List;
 @Service
 public class AuthUserServiceImpl extends AbstractService<AuthUserValidator, AuthUserMapper, AuthUserRepository> implements AuthUserService {
 
-    public AuthUserServiceImpl(AuthUserValidator validator, AuthUserMapper mapper, AuthUserRepository repository) {
+    private final PasswordEncoderConfigurer encoderConfigurer;
+    public AuthUserServiceImpl(AuthUserValidator validator, AuthUserMapper mapper, AuthUserRepository repository, PasswordEncoderConfigurer encoderConfigurer) {
         super(validator, mapper, repository);
+        this.encoderConfigurer = encoderConfigurer;
     }
 
     @Override
@@ -101,6 +103,21 @@ public class AuthUserServiceImpl extends AbstractService<AuthUserValidator, Auth
     }
 
     @Override
+    public void changePassword(AuthUserChangePasswordDTO dto) {
+        AuthUserEntity entity = repository.findById(dto.getUserId())
+                .orElseThrow(() -> {
+                    throw new NotFoundException("Auth User not found");
+                });
+        if (!encoderConfigurer.encoder().matches(dto.getOldPwd(), entity.getPassword())) {
+            throw new RuntimeException("Invalid Password!");
+        }
+        entity.setPassword(encoderConfigurer.encoder().encode(dto.getNewPwd()));
+        entity.setUpdatedAt(LocalDateTime.now());
+        entity.setUpdatedBy(dto.getUserId());
+        repository.save(entity);
+    }
+
+    @Override
     public List<AuthUserGetDTO> list(AuthUserCriteria criteria) {
         return repository.findAll(PageRequest.of(criteria.getPage(), criteria.getSize(),
                         criteria.getSort(), criteria.getFieldsEnum().getValue()))
@@ -111,7 +128,7 @@ public class AuthUserServiceImpl extends AbstractService<AuthUserValidator, Auth
 
 
     @Override
-    public List<AuthUserGetDTO> list_with_search(AuthUserSearchCriteria criteria) {
+    public List<AuthUserGetDTO> list_with_search(SearchCriteria criteria) {
         return repository.findAll(new AuthUserSearchSpecification(criteria),
                         PageRequest.of(criteria.getPage(),
                                 criteria.getSize()))
@@ -121,7 +138,7 @@ public class AuthUserServiceImpl extends AbstractService<AuthUserValidator, Auth
     }
 
     @Override
-    public List<AuthUserGetDTO> list_with_between(AuthUserBetweenCriteria criteria) {
+    public List<AuthUserGetDTO> list_with_between(BetweenCriteria criteria) {
         return repository.findAll(new AuthUserBetweenSpecification(criteria),
                         PageRequest.of(criteria.getPage(),
                                 criteria.getSize()))

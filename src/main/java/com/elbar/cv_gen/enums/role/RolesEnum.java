@@ -3,6 +3,7 @@ package com.elbar.cv_gen.enums.role;
 import com.elbar.cv_gen.enums.language.LanguagesEnum;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.webjars.NotFoundException;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -19,6 +20,13 @@ public enum RolesEnum {
     public static boolean hasRoleIgnoreCase(String value) {
         return Arrays.stream(values())
                 .anyMatch(f -> f.value.equalsIgnoreCase(value));
+    }
+
+    public static RolesEnum getEqual(String var) {
+        return Arrays.stream(values())
+                .filter(f -> f.value.equals(var))
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException("Role not found"));
     }
 
     public static RolesEnum findAny() {

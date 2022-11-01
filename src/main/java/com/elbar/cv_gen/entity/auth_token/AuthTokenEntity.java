@@ -1,7 +1,7 @@
 package com.elbar.cv_gen.entity.auth_token;
 
 import com.elbar.cv_gen.entity.Auditable;
-import com.elbar.cv_gen.entity.auth_user.AuthUserEntity;
+import com.elbar.cv_gen.enums.token.TokenType;
 import lombok.*;
 
 import javax.persistence.*;
@@ -23,5 +23,9 @@ public class AuthTokenEntity extends Auditable {
 
     @Column(name = "token", nullable = false)
     private String token;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type", nullable = false)
+    private TokenType type;
 
 }
