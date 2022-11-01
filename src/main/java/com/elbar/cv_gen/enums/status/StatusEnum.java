@@ -3,6 +3,7 @@ package com.elbar.cv_gen.enums.status;
 import com.elbar.cv_gen.enums.language.LanguagesEnum;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.webjars.NotFoundException;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -23,6 +24,13 @@ public enum StatusEnum {
     public static StatusEnum findAny() {
         return Arrays.asList(values())
                 .get(new Random().nextInt(values().length));
+    }
+
+    public static StatusEnum getEqual(String var) {
+        return Arrays.stream(values())
+                .filter(f -> f.value.equals(var))
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException("Status not found"));
     }
 }
 
