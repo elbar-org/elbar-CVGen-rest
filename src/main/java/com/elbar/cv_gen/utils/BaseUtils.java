@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.Instant;
+import java.util.concurrent.TimeUnit;
+
 @Getter
 @Setter
 public class BaseUtils {
@@ -19,4 +22,9 @@ public class BaseUtils {
     public static final String LIST_WITH_BETWEEN_PATH = "list_with_between";
 
     public static final RestTemplate REST_TEMPLATE = new RestTemplate();
+
+
+    public static Instant plusMin(Integer min) {
+        return Instant.now().plusNanos(TimeUnit.MINUTES.toNanos(min));
+    }
 }

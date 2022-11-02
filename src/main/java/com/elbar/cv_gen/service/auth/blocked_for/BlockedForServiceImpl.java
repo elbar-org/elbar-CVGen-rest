@@ -42,6 +42,14 @@ public class BlockedForServiceImpl extends AbstractService<BlockedForValidator, 
     }
 
     @Override
+    public Integer blockCodeGetMin(String code) {
+        return repository.findByCodeEquals(code)
+                .orElseThrow(() -> {
+                    throw new NotFoundException("Block For not found");
+                }).getMinDuration();
+    }
+
+    @Override
     public BlockedForGetDTO get(Integer id) {
         validator.validOnKey(id);
         return mapper.fromGetDTO(
