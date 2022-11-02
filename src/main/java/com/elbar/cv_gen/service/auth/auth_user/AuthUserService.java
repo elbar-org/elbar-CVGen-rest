@@ -2,11 +2,8 @@ package com.elbar.cv_gen.service.auth.auth_user;
 
 import com.elbar.cv_gen.criteria.BetweenCriteria;
 import com.elbar.cv_gen.criteria.SearchCriteria;
-import com.elbar.cv_gen.criteria.auth_user.AuthUserBetweenCriteria;
 import com.elbar.cv_gen.criteria.auth.auth_user.AuthUserCriteria;
-import com.elbar.cv_gen.criteria.auth_user.AuthUserSearchCriteria;
 import com.elbar.cv_gen.dto.auth.auth_user.*;
-import com.elbar.cv_gen.dto.auth_user.*;
 import com.elbar.cv_gen.service.BaseService;
 import com.elbar.cv_gen.service.GenericCUDService;
 import com.elbar.cv_gen.service.GenericGLService;
@@ -23,4 +20,5 @@ public interface AuthUserService extends GenericCUDService<AuthUserCreateDTO, Au
 
     Object login(AuthUserRequestDTO dto);
 
+    void changePassword(AuthUserChangePasswordDTO dto);
 }

@@ -8,7 +8,6 @@ import com.elbar.cv_gen.criteria.BetweenCriteria;
 import com.elbar.cv_gen.criteria.SearchCriteria;
 import com.elbar.cv_gen.criteria.auth.auth_user.AuthUserCriteria;
 import com.elbar.cv_gen.dto.auth.auth_user.*;
-import com.elbar.cv_gen.dto.auth_user.*;
 import com.elbar.cv_gen.response.Data;
 import com.elbar.cv_gen.service.auth.auth_user.AuthUserService;
 import com.elbar.cv_gen.utils.BaseUtils;
@@ -43,7 +42,7 @@ public class AuthUserController extends AbstractController<AuthUserService>
     }
 
     @RequestMapping(value = "changePassword", method = RequestMethod.PUT)
-    public ResponseEntity<Data<String>> changePassword(@RequestBody AuthUserChangePasswordDTO dto) {
+    public ResponseEntity<Data<String>> changePassword(@Valid @RequestBody AuthUserChangePasswordDTO dto) {
         service.changePassword(dto);
         return new ResponseEntity<>(new Data<>("Successfully Change Password - Auth User"), HttpStatus.OK);
     }
