@@ -24,5 +24,6 @@ public class TransactionEntity extends Auditable {
     @Column(name = "card_id", nullable = false)
     private Integer cardId;
 
-    // TODO: 10/31/2022 add field amount
+    @Column(name = "amount", nullable = false)
+    private Long amount;
 }
