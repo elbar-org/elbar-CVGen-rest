@@ -15,7 +15,6 @@ import com.elbar.cv_gen.service.AbstractService;
 import com.elbar.cv_gen.specification.auth_user.AuthUserBetweenSpecification;
 import com.elbar.cv_gen.specification.auth_user.AuthUserSearchSpecification;
 import com.elbar.cv_gen.utils.BaseUtils;
-import com.elbar.cv_gen.validator.auth.auth_user.AuthUserValidator;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpEntity;
@@ -31,18 +30,17 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class AuthUserServiceImpl extends AbstractService<AuthUserValidator, AuthUserMapper, AuthUserRepository> implements AuthUserService {
+public class AuthUserServiceImpl extends AbstractService<AuthUserMapper, AuthUserRepository> implements AuthUserService {
 
     private final PasswordEncoderConfigurer encoderConfigurer;
 
-    public AuthUserServiceImpl(AuthUserValidator validator, AuthUserMapper mapper, AuthUserRepository repository, PasswordEncoderConfigurer encoderConfigurer) {
-        super(validator, mapper, repository);
+    public AuthUserServiceImpl(AuthUserMapper mapper, AuthUserRepository repository, PasswordEncoderConfigurer encoderConfigurer) {
+        super(mapper, repository);
         this.encoderConfigurer = encoderConfigurer;
     }
 
     @Override
     public void create(AuthUserCreateDTO dto) {
-        validator.validOnCreate(dto);
         if (repository.existsByPhoneEquals(dto.getPhone())) {
             throw new RuntimeException("This phone number already created!");
         }
@@ -57,7 +55,6 @@ public class AuthUserServiceImpl extends AbstractService<AuthUserValidator, Auth
 
     @Override
     public void update(AuthUserUpdateDTO dto) {
-        validator.validOnUpdate(dto);
         AuthUserEntity entity = repository.findById(dto.getId())
                 .orElseThrow(() -> {
                     throw new NotFoundException("User not found");
@@ -70,7 +67,6 @@ public class AuthUserServiceImpl extends AbstractService<AuthUserValidator, Auth
 
     @Override
     public void delete(Integer id) {
-        validator.validOnKey(id);
         if (!repository.existsById(id)) {
             throw new NotFoundException("User not found");
         }
@@ -79,7 +75,6 @@ public class AuthUserServiceImpl extends AbstractService<AuthUserValidator, Auth
 
     @Override
     public AuthUserGetDTO get(Integer id) {
-        validator.validOnKey(id);
         return mapper.fromGetDTO(
                 repository.findById(id)
                         .orElseThrow(() -> {
@@ -89,7 +84,6 @@ public class AuthUserServiceImpl extends AbstractService<AuthUserValidator, Auth
 
     @Override
     public AuthUserDetailDTO detail(Integer id) {
-        validator.validOnKey(id);
         return mapper.fromDetailDTO(
                 repository.findById(id)
                         .orElseThrow(() -> {
@@ -151,7 +145,6 @@ public class AuthUserServiceImpl extends AbstractService<AuthUserValidator, Auth
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        validator.validOnPhone(username);
         AuthUserEntity entity = repository.findByPhoneEquals(username)
                 .orElseThrow(() -> {
                     throw new NotFoundException("User not found");

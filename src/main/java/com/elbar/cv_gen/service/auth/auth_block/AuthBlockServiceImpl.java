@@ -11,26 +11,24 @@ import com.elbar.cv_gen.repository.auth.auth_block.AuthBlockRepository;
 import com.elbar.cv_gen.service.AbstractService;
 import com.elbar.cv_gen.service.auth.blocked_for.BlockedForService;
 import com.elbar.cv_gen.utils.BaseUtils;
-import com.elbar.cv_gen.validator.auth.auth_block.AuthBlockValidator;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class AuthBlockServiceImpl extends AbstractService<AuthBlockValidator, AuthBlockMapper, AuthBlockRepository>
+public class AuthBlockServiceImpl extends AbstractService<AuthBlockMapper, AuthBlockRepository>
         implements AuthBlockService {
 
     private final BlockedForService blockedForService;
 
-    public AuthBlockServiceImpl(AuthBlockValidator validator, AuthBlockMapper mapper, AuthBlockRepository repository, BlockedForService blockedForService) {
-        super(validator, mapper, repository);
+    public AuthBlockServiceImpl(AuthBlockMapper mapper, AuthBlockRepository repository, BlockedForService blockedForService) {
+        super(mapper, repository);
         this.blockedForService = blockedForService;
     }
 
     @Override
     public void create(AuthBlockCreateDTO dto) {
-        validator.validOnCreate(dto);
         if (repository.existsByUserIdEquals(dto.getUserId())) {
             throw new RuntimeException("This user already blocked!");
         }
@@ -42,7 +40,6 @@ public class AuthBlockServiceImpl extends AbstractService<AuthBlockValidator, Au
 
     @Override
     public void delete(Integer id) {
-        validator.validOnKey(id);
         if (!repository.existsById(id)) {
             throw new NotFoundException("Auth Blocked not found");
         }

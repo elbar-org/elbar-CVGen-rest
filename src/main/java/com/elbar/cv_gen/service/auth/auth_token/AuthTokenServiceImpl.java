@@ -8,7 +8,6 @@ import com.elbar.cv_gen.entity.auth.auth_token.AuthTokenEntity;
 import com.elbar.cv_gen.mapper.auth.auth_token.AuthTokenMapper;
 import com.elbar.cv_gen.repository.auth.auth_token.AuthTokenRepository;
 import com.elbar.cv_gen.service.AbstractService;
-import com.elbar.cv_gen.validator.auth.auth_token.AuthTokenValidator;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
@@ -20,15 +19,14 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @Service
-public class AuthTokenServiceImpl extends AbstractService<AuthTokenValidator, AuthTokenMapper, AuthTokenRepository> implements AuthTokenService {
+public class AuthTokenServiceImpl extends AbstractService<AuthTokenMapper, AuthTokenRepository> implements AuthTokenService {
 
-    public AuthTokenServiceImpl(AuthTokenValidator validator, AuthTokenMapper mapper, AuthTokenRepository repository) {
-        super(validator, mapper, repository);
+    public AuthTokenServiceImpl(AuthTokenMapper mapper, AuthTokenRepository repository) {
+        super(mapper, repository);
     }
 
     @Override
     public void create(AuthTokenCreateDTO dto) {
-        validator.validOnCreate(dto);
         Optional<AuthTokenEntity> optional = repository.findByUserIdEqualsAndTypeEquals(dto.getUserId(),
                 dto.getType());
         AuthTokenEntity authTokenEntity;
@@ -48,7 +46,6 @@ public class AuthTokenServiceImpl extends AbstractService<AuthTokenValidator, Au
 
     @Override
     public void delete(Integer id) {
-        validator.validOnKey(id);
         if (!repository.existsById(id)) {
             throw new NotFoundException("Auth Token not found");
         }

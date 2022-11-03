@@ -8,23 +8,21 @@ import com.elbar.cv_gen.exception.exception.NotFoundException;
 import com.elbar.cv_gen.mapper.auth.blocked_for.BlockedForMapper;
 import com.elbar.cv_gen.repository.auth.blocked_for.BlockedForRepository;
 import com.elbar.cv_gen.service.AbstractService;
-import com.elbar.cv_gen.validator.auth.blocked_for.BlockedForValidator;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class BlockedForServiceImpl extends AbstractService<BlockedForValidator, BlockedForMapper, BlockedForRepository>
+public class BlockedForServiceImpl extends AbstractService<BlockedForMapper, BlockedForRepository>
         implements BlockedForService {
 
-    public BlockedForServiceImpl(BlockedForValidator validator, BlockedForMapper mapper, BlockedForRepository repository) {
-        super(validator, mapper, repository);
+    public BlockedForServiceImpl(BlockedForMapper mapper, BlockedForRepository repository) {
+        super(mapper, repository);
     }
 
     @Override
     public void create(BlockedForCreateDTO dto) {
-        validator.validOnCreate(dto);
         if (repository.existsByCodeEquals(dto.getCode())) {
             throw new RuntimeException("this code already created!");
         }
@@ -34,7 +32,6 @@ public class BlockedForServiceImpl extends AbstractService<BlockedForValidator, 
 
     @Override
     public void delete(Integer id) {
-        validator.validOnKey(id);
         if (!repository.existsById(id)) {
             throw new NotFoundException("Blocked For not found");
         }
@@ -51,7 +48,6 @@ public class BlockedForServiceImpl extends AbstractService<BlockedForValidator, 
 
     @Override
     public BlockedForGetDTO get(Integer id) {
-        validator.validOnKey(id);
         return mapper.fromGetDTO(
                 repository.findById(id)
                         .orElseThrow(() -> {
