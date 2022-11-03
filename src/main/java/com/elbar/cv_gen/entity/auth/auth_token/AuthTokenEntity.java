@@ -13,7 +13,7 @@ import java.time.Instant;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "auth_token")
+@Table(name = "auth_token", schema = "auth")
 public class AuthTokenEntity extends Auditable {
     @Column(name = "user_id", nullable = false)
     private Integer userId;

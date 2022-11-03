@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "user_payment")
+@Table(name = "user_payment", schema = "auth")
 public class UserPaymentEntity extends Auditable {
 
     @Column(name = "user_id", nullable = false)

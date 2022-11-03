@@ -12,7 +12,7 @@ import java.time.Instant;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "auth_block")
+@Table(name = "auth_block", schema = "auth")
 public class AuthBlockEntity extends Auditable {
     @Column(name = "user_id", nullable = false)
     private Integer userId;

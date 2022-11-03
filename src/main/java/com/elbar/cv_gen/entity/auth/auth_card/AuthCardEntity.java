@@ -11,7 +11,7 @@ import javax.persistence.*;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "auth_card")
+@Table(name = "auth_card", schema = "auth")
 public class AuthCardEntity extends Auditable {
     @Column(name = "user_id", nullable = false)
     private Integer userId;
