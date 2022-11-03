@@ -15,7 +15,7 @@ import java.time.Instant;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "auth_user")
+@Table(name = "auth_user", schema = "auth")
 public class AuthUserEntity extends Auditable {
     @Column(name = "first_name", nullable = false)
     private String firstName;

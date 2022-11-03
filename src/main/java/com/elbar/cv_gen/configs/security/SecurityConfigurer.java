@@ -56,7 +56,7 @@ public class SecurityConfigurer {
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilter(new CustomAuthenticationFilter(authManager(),tokenService, userRepository))
+                .addFilter(new CustomAuthenticationFilter(authManager(), tokenService, userRepository))
                 .addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

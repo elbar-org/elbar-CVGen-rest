@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "blocked_for")
+@Table(name = "blocked_for", schema = "auth")
 public class BlockedForEntity extends Auditable {
     @Column(name = "code", nullable = false)
     private String code;
