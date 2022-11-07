@@ -1,5 +1,6 @@
 package com.elbar.cv_gen.service.auth.auth_user;
 
+import com.elbar.cv_gen.annotation.IdConstraint;
 import com.elbar.cv_gen.configs.encryption.PasswordEncoderConfigurer;
 import com.elbar.cv_gen.criteria.BetweenCriteria;
 import com.elbar.cv_gen.criteria.SearchCriteria;
@@ -12,8 +13,8 @@ import com.elbar.cv_gen.exception.exception.InvalidValidationException;
 import com.elbar.cv_gen.mapper.auth.auth_user.AuthUserMapper;
 import com.elbar.cv_gen.repository.auth.auth_user.AuthUserRepository;
 import com.elbar.cv_gen.service.AbstractService;
-import com.elbar.cv_gen.specification.auth_user.AuthUserBetweenSpecification;
-import com.elbar.cv_gen.specification.auth_user.AuthUserSearchSpecification;
+import com.elbar.cv_gen.specification.auth.auth_user.AuthUserBetweenSpecification;
+import com.elbar.cv_gen.specification.auth.auth_user.AuthUserSearchSpecification;
 import com.elbar.cv_gen.utils.BaseUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.PageRequest;
@@ -111,6 +112,11 @@ public class AuthUserServiceImpl extends AbstractService<AuthUserMapper, AuthUse
         entity.setUpdatedAt(LocalDateTime.now());
         entity.setUpdatedBy(dto.getUserId());
         repository.save(entity);
+    }
+
+    @Override
+    public boolean existById(@IdConstraint Integer id) {
+        return repository.existsById(id);
     }
 
     @Override

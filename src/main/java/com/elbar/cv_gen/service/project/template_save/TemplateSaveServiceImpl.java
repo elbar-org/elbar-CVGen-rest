@@ -6,6 +6,7 @@ import com.elbar.cv_gen.dto.project.template_save.TemplateSaveCreateDTO;
 import com.elbar.cv_gen.dto.project.template_save.TemplateSaveDetailDTO;
 import com.elbar.cv_gen.dto.project.template_save.TemplateSaveGetDTO;
 import com.elbar.cv_gen.dto.project.template_save.TemplateSaveUpdateDTO;
+import com.elbar.cv_gen.entity.project.template_save.TemplateSaveEntity;
 import com.elbar.cv_gen.exception.exception.NotFoundException;
 import com.elbar.cv_gen.mapper.project.template_save.TemplateSaveMapper;
 import com.elbar.cv_gen.repository.project.template_save.TemplateSaveRepository;
@@ -13,6 +14,7 @@ import com.elbar.cv_gen.service.AbstractService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -34,10 +36,14 @@ public class TemplateSaveServiceImpl extends AbstractService<TemplateSaveMapper,
 
     @Override
     public void delete(@IdConstraint Integer id) {
-        if (!repository.existsById(id)) {
-            throw new NotFoundException("TemplateSave not found");
-        }
-        repository.deleteById(id);
+        TemplateSaveEntity save = repository.findById(id)
+                .orElseThrow(() -> {
+                    throw new NotFoundException("Template Save not found");
+                });
+        save.setDeleted(true);
+        save.setUpdatedAt(LocalDateTime.now());
+        save.setUpdatedBy(-1);
+        repository.save(save);
     }
 
     @Override

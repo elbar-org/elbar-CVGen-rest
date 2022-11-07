@@ -21,4 +21,6 @@ public interface AuthUserService extends GenericCUDService<AuthUserCreateDTO, Au
     Object login(AuthUserRequestDTO dto);
 
     void changePassword(AuthUserChangePasswordDTO dto);
+
+    boolean existById(Integer id);
 }
