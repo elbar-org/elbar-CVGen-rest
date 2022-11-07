@@ -10,6 +10,7 @@ import com.elbar.cv_gen.service.project.category.CategoryServiceImpl;
 import com.elbar.cv_gen.specification.project.category.CategoryBetweenSpecification;
 import com.elbar.cv_gen.specification.project.category.CategorySearchSpecification;
 import com.elbar.cv_gen.utils.BaseUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,36 +26,39 @@ public class CategoryControllerImpl extends AbstractController<CategoryServiceIm
 
     @Override
     public ResponseEntity<Data<String>> create(CategoryCreateDTO DTO) {
-        return null;
+        service.create(DTO);
+        return new ResponseEntity<>(new Data<>("Successfully created category"), HttpStatus.CREATED);
     }
 
     @Override
     public ResponseEntity<Data<String>> update(CategoryUpdateDTO DTO) {
-        return null;
+        service.update(DTO);
+        return new ResponseEntity<>(new Data<>("Successfully updated category"), HttpStatus.NO_CONTENT);
     }
 
     @Override
     public ResponseEntity<Data<String>> delete(Integer id) {
-        return null;
+        service.delete(id);
+        return new ResponseEntity<>(new Data<>("Successfully deleted category"), HttpStatus.NO_CONTENT);
     }
 
     @Override
     public ResponseEntity<Data<CategoryGetDTO>> get(Integer id) {
-        return null;
+        return new ResponseEntity<>(new Data<>(service.get(id)), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<Data<List<CategoryGetDTO>>> list(CategoryCriteria criteria) {
-        return null;
+        return new ResponseEntity<>(new Data<>(service.list(criteria)), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<Data<List<CategoryGetDTO>>> list_with_search(CategorySearchSpecification criteria) {
-        return null;
+        return new ResponseEntity<>(new Data<>(service.list_with_search(criteria)), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<Data<List<CategoryGetDTO>>> list_with_between(CategoryBetweenSpecification criteria) {
-        return null;
+        return new ResponseEntity<>(new Data<>(service.list_with_between(criteria)), HttpStatus.OK);
     }
 }

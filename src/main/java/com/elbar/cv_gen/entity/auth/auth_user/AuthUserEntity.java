@@ -5,6 +5,7 @@ import com.elbar.cv_gen.enums.auth.language.LanguagesEnum;
 import com.elbar.cv_gen.enums.auth.role.RolesEnum;
 import com.elbar.cv_gen.enums.auth.status.StatusEnum;
 import lombok.*;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -15,6 +16,7 @@ import java.time.Instant;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Where(clause = "is_deleted = false")
 @Table(name = "auth_user", schema = "auth")
 public class AuthUserEntity extends Auditable {
     @Column(name = "first_name", nullable = false)

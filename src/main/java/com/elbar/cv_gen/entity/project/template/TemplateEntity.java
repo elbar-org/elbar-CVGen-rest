@@ -2,6 +2,7 @@ package com.elbar.cv_gen.entity.project.template;
 
 import com.elbar.cv_gen.entity.Auditable;
 import lombok.*;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +14,7 @@ import javax.persistence.Table;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Where(clause = "is_deleted = false")
 @Table(name = "template", schema = "project")
 public class TemplateEntity extends Auditable {
     @Column(name = "title", nullable = false, unique = true)

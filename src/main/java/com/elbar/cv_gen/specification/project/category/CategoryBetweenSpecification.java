@@ -16,6 +16,6 @@ public class CategoryBetweenSpecification extends AbstractSpecification<BetweenC
 
     @Override
     public Predicate toPredicate(Root<CategoryEntity> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-        return null;
+        return criteriaBuilder.between(root.get(criteria.getKey()), criteria.getFrom(), criteria.getTo());
     }
 }

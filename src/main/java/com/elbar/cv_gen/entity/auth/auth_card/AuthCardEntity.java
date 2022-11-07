@@ -2,6 +2,7 @@ package com.elbar.cv_gen.entity.auth.auth_card;
 
 import com.elbar.cv_gen.entity.Auditable;
 import lombok.*;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Where(clause = "is_deleted = false")
 @Table(name = "auth_card", schema = "auth")
 public class AuthCardEntity extends Auditable {
     @Column(name = "user_id", nullable = false)
