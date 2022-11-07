@@ -1,5 +1,6 @@
 package com.elbar.cv_gen.criteria;
 
+import com.elbar.cv_gen.specification.BaseSpecification;
 import lombok.*;
 import org.springdoc.api.annotations.ParameterObject;
 
@@ -9,7 +10,7 @@ import org.springdoc.api.annotations.ParameterObject;
 @ParameterObject
 @NoArgsConstructor
 @AllArgsConstructor
-public class BetweenCriteria extends GenericCriteria {
+public class BetweenCriteria extends GenericCriteria implements BaseSpecification {
     private String key;
     private Integer from;
     private Integer to;

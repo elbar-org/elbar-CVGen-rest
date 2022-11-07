@@ -1,4 +1,11 @@
 package com.elbar.cv_gen.repository.project.category;
 
-public interface CategoryRepository {
+import com.elbar.cv_gen.entity.project.category.CategoryEntity;
+import com.elbar.cv_gen.repository.BaseRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface CategoryRepository extends JpaRepository<CategoryEntity, Integer>, JpaSpecificationExecutor<CategoryEntity>, BaseRepository {
 }
