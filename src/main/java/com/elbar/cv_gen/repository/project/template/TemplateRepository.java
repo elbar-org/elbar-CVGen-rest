@@ -1,4 +1,14 @@
 package com.elbar.cv_gen.repository.project.template;
 
-public interface TemplateRepository {
+import com.elbar.cv_gen.entity.project.template.TemplateEntity;
+import com.elbar.cv_gen.repository.BaseRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
+
+@Repository
+public interface TemplateRepository extends JpaRepository<TemplateEntity, Integer>, JpaSpecificationExecutor<TemplateEntity>, BaseRepository {
+    Optional<TemplateEntity> findByTitle(String title);
 }
