@@ -1,14 +1,14 @@
 package com.elbar.cv_gen.controller.project.category;
 
 import com.elbar.cv_gen.controller.AbstractController;
+import com.elbar.cv_gen.criteria.BetweenCriteria;
+import com.elbar.cv_gen.criteria.SearchCriteria;
 import com.elbar.cv_gen.criteria.project.category.CategoryCriteria;
 import com.elbar.cv_gen.dto.project.category.CategoryCreateDTO;
 import com.elbar.cv_gen.dto.project.category.CategoryGetDTO;
 import com.elbar.cv_gen.dto.project.category.CategoryUpdateDTO;
 import com.elbar.cv_gen.response.Data;
 import com.elbar.cv_gen.service.project.category.CategoryServiceImpl;
-import com.elbar.cv_gen.specification.project.category.CategoryBetweenSpecification;
-import com.elbar.cv_gen.specification.project.category.CategorySearchSpecification;
 import com.elbar.cv_gen.utils.BaseUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,12 +53,12 @@ public class CategoryControllerImpl extends AbstractController<CategoryServiceIm
     }
 
     @Override
-    public ResponseEntity<Data<List<CategoryGetDTO>>> list_with_search(CategorySearchSpecification criteria) {
+    public ResponseEntity<Data<List<CategoryGetDTO>>> list_with_search(SearchCriteria criteria) {
         return new ResponseEntity<>(new Data<>(service.list_with_search(criteria)), HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Data<List<CategoryGetDTO>>> list_with_between(CategoryBetweenSpecification criteria) {
+    public ResponseEntity<Data<List<CategoryGetDTO>>> list_with_between(BetweenCriteria criteria) {
         return new ResponseEntity<>(new Data<>(service.list_with_between(criteria)), HttpStatus.OK);
     }
 }

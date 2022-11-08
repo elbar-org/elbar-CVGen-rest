@@ -1,14 +1,14 @@
 package com.elbar.cv_gen.controller.project.template;
 
 import com.elbar.cv_gen.controller.AbstractController;
+import com.elbar.cv_gen.criteria.BetweenCriteria;
+import com.elbar.cv_gen.criteria.SearchCriteria;
 import com.elbar.cv_gen.criteria.project.template.TemplateCriteria;
 import com.elbar.cv_gen.dto.project.template.TemplateCreateDTO;
 import com.elbar.cv_gen.dto.project.template.TemplateGetDTO;
 import com.elbar.cv_gen.dto.project.template.TemplateUpdateDTO;
 import com.elbar.cv_gen.response.Data;
 import com.elbar.cv_gen.service.project.template.TemplateServiceImpl;
-import com.elbar.cv_gen.specification.project.template.TemplateBetweenSpecification;
-import com.elbar.cv_gen.specification.project.template.TemplateSearchSpecification;
 import com.elbar.cv_gen.utils.BaseUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,12 +53,12 @@ public class TemplateControllerImpl extends AbstractController<TemplateServiceIm
     }
 
     @Override
-    public ResponseEntity<Data<List<TemplateGetDTO>>> list_with_search(TemplateSearchSpecification criteria) {
+    public ResponseEntity<Data<List<TemplateGetDTO>>> list_with_search(SearchCriteria criteria) {
         return new ResponseEntity<>(new Data<>(service.list_with_search(criteria)), HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Data<List<TemplateGetDTO>>> list_with_between(TemplateBetweenSpecification criteria) {
+    public ResponseEntity<Data<List<TemplateGetDTO>>> list_with_between(BetweenCriteria criteria) {
         return new ResponseEntity<>(new Data<>(service.list_with_between(criteria)), HttpStatus.OK);
     }
 }

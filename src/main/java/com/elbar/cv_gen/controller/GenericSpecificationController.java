@@ -1,5 +1,6 @@
 package com.elbar.cv_gen.controller;
 
+import com.elbar.cv_gen.criteria.GenericCriteria;
 import com.elbar.cv_gen.dto.GenericDTO;
 import com.elbar.cv_gen.response.Data;
 import com.elbar.cv_gen.specification.BaseSpecification;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.validation.Valid;
 import java.util.List;
 
-public interface GenericSpecificationController<SC extends BaseSpecification, BC extends BaseSpecification, GD extends GenericDTO> {
+public interface GenericSpecificationController<SC extends GenericCriteria, BC extends GenericCriteria, GD extends GenericDTO> {
     @RequestMapping(value = BaseUtils.LIST_WITH_SEARCH_PATH, method = RequestMethod.GET)
     ResponseEntity<Data<List<GD>>> list_with_search(@Valid SC criteria);
 

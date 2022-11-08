@@ -1,5 +1,7 @@
 package com.elbar.cv_gen.service.project.category;
 
+import com.elbar.cv_gen.criteria.BetweenCriteria;
+import com.elbar.cv_gen.criteria.SearchCriteria;
 import com.elbar.cv_gen.criteria.project.category.CategoryCriteria;
 import com.elbar.cv_gen.dto.project.category.CategoryCreateDTO;
 import com.elbar.cv_gen.dto.project.category.CategoryGetDTO;
@@ -68,14 +70,14 @@ public class CategoryServiceImpl extends AbstractService<CategoryMapper, Categor
     }
 
     @Override
-    public List<CategoryGetDTO> list_with_search(CategorySearchSpecification criteria) {
-        List<CategoryEntity> entities = repository.findAll(criteria);
+    public List<CategoryGetDTO> list_with_search(SearchCriteria criteria) {
+        List<CategoryEntity> entities = repository.findAll(new CategorySearchSpecification(criteria));
         return entities.stream().map(mapper::fromGetDTO).toList();
     }
 
     @Override
-    public List<CategoryGetDTO> list_with_between(CategoryBetweenSpecification criteria) {
-        List<CategoryEntity> entities = repository.findAll(criteria);
+    public List<CategoryGetDTO> list_with_between(BetweenCriteria criteria) {
+        List<CategoryEntity> entities = repository.findAll(new CategoryBetweenSpecification(criteria));
         return entities.stream().map(mapper::fromGetDTO).toList();
     }
 }

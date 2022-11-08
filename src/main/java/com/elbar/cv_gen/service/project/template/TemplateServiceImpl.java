@@ -1,5 +1,7 @@
 package com.elbar.cv_gen.service.project.template;
 
+import com.elbar.cv_gen.criteria.BetweenCriteria;
+import com.elbar.cv_gen.criteria.SearchCriteria;
 import com.elbar.cv_gen.criteria.project.template.TemplateCriteria;
 import com.elbar.cv_gen.dto.project.template.TemplateCreateDTO;
 import com.elbar.cv_gen.dto.project.template.TemplateGetDTO;
@@ -68,14 +70,14 @@ public class TemplateServiceImpl extends AbstractService<TemplateMapper, Templat
     }
 
     @Override
-    public List<TemplateGetDTO> list_with_search(TemplateSearchSpecification criteria) {
-        List<TemplateEntity> entities = repository.findAll(criteria);
+    public List<TemplateGetDTO> list_with_search(SearchCriteria criteria) {
+        List<TemplateEntity> entities = repository.findAll(new TemplateSearchSpecification(criteria));
         return entities.stream().map(mapper::fromGetDTO).toList();
     }
 
     @Override
-    public List<TemplateGetDTO> list_with_between(TemplateBetweenSpecification criteria) {
-        List<TemplateEntity> entities = repository.findAll(criteria);
+    public List<TemplateGetDTO> list_with_between(BetweenCriteria criteria) {
+        List<TemplateEntity> entities = repository.findAll(new TemplateBetweenSpecification(criteria));
         return entities.stream().map(mapper::fromGetDTO).toList();
     }
 }
