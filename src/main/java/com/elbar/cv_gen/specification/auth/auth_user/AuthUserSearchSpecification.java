@@ -1,4 +1,4 @@
-package com.elbar.cv_gen.specification.auth_user;
+package com.elbar.cv_gen.specification.auth.auth_user;
 
 import com.elbar.cv_gen.criteria.SearchCriteria;
 import com.elbar.cv_gen.entity.auth.auth_user.AuthUserEntity;
