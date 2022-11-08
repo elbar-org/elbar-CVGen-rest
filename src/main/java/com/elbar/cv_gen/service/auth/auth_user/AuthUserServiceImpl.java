@@ -10,6 +10,7 @@ import com.elbar.cv_gen.entity.auth.auth_user.AuthUserEntity;
 import com.elbar.cv_gen.enums.auth.role.RolesEnum;
 import com.elbar.cv_gen.enums.auth.status.StatusEnum;
 import com.elbar.cv_gen.exception.exception.InvalidValidationException;
+import com.elbar.cv_gen.exception.exception.NotFoundException;
 import com.elbar.cv_gen.mapper.auth.auth_user.AuthUserMapper;
 import com.elbar.cv_gen.repository.auth.auth_user.AuthUserRepository;
 import com.elbar.cv_gen.service.AbstractService;
@@ -25,10 +26,10 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.webjars.NotFoundException;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class AuthUserServiceImpl extends AbstractService<AuthUserMapper, AuthUserRepository> implements AuthUserService {
@@ -117,6 +118,17 @@ public class AuthUserServiceImpl extends AbstractService<AuthUserMapper, AuthUse
     @Override
     public boolean existById(@IdConstraint Integer id) {
         return repository.existsById(id);
+    }
+
+    @Override
+    public AuthUserEntity getEntity(Integer id) {
+        if (Objects.isNull(id) || id < 1) {
+            throw new InvalidValidationException("Invalid ID!");
+        }
+        return repository.findById(id)
+                .orElseThrow(() -> {
+                    throw new NotFoundException("Auth User not found");
+                });
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.elbar.cv_gen.criteria.BetweenCriteria;
 import com.elbar.cv_gen.criteria.SearchCriteria;
 import com.elbar.cv_gen.criteria.auth.auth_user.AuthUserCriteria;
 import com.elbar.cv_gen.dto.auth.auth_user.*;
+import com.elbar.cv_gen.entity.auth.auth_user.AuthUserEntity;
 import com.elbar.cv_gen.service.BaseService;
 import com.elbar.cv_gen.service.GenericCUDService;
 import com.elbar.cv_gen.service.GenericGLService;
@@ -23,4 +24,6 @@ public interface AuthUserService extends GenericCUDService<AuthUserCreateDTO, Au
     void changePassword(AuthUserChangePasswordDTO dto);
 
     boolean existById(Integer id);
+
+    AuthUserEntity getEntity(Integer id);
 }
