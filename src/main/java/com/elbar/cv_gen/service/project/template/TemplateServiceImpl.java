@@ -7,6 +7,8 @@ import com.elbar.cv_gen.dto.project.template.TemplateCreateDTO;
 import com.elbar.cv_gen.dto.project.template.TemplateGetDTO;
 import com.elbar.cv_gen.dto.project.template.TemplateUpdateDTO;
 import com.elbar.cv_gen.entity.project.template.TemplateEntity;
+import com.elbar.cv_gen.exception.exception.InvalidValidationException;
+import com.elbar.cv_gen.exception.exception.NotFoundException;
 import com.elbar.cv_gen.mapper.project.template.TemplateMapper;
 import com.elbar.cv_gen.repository.project.template.TemplateRepository;
 import com.elbar.cv_gen.service.AbstractService;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -79,5 +82,16 @@ public class TemplateServiceImpl extends AbstractService<TemplateMapper, Templat
     public List<TemplateGetDTO> list_with_between(BetweenCriteria criteria) {
         List<TemplateEntity> entities = repository.findAll(new TemplateBetweenSpecification(criteria));
         return entities.stream().map(mapper::fromGetDTO).toList();
+    }
+
+    @Override
+    public TemplateEntity getEntity(Integer id) {
+        if (Objects.isNull(id) || id < 1) {
+            throw new InvalidValidationException("Invalid ID!");
+        }
+        return repository.findById(id)
+                .orElseThrow(() -> {
+                    throw new NotFoundException("Template not found");
+                });
     }
 }
