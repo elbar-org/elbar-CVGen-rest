@@ -20,5 +20,10 @@ public class UserPaymentEntity extends Auditable {
 
     @Column(name = "user_id", nullable = false)
     private Integer userId;
-    // TODO will be write other columns!
+
+    @Column(name = "template_id", nullable = false)
+    private Integer templateId;
+
+    @Column(name = "transaction_id", nullable = false)
+    private Integer transactionId;
 }

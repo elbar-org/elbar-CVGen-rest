@@ -46,8 +46,8 @@ public class AuthUserEntity extends Auditable {
     @Column(name = "image_path", columnDefinition = "text")
     private String imagePath;
 
-    @Column(name = "free_chance", nullable = false)
-    private Integer freeChance;
+    @Column(name = "download_count", nullable = false)
+    private Integer downloadCount;
 
     @Column(name = "last_login_at")
     private Instant lastLoginAt;

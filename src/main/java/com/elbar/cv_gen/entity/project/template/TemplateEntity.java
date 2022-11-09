@@ -27,10 +27,10 @@ public class TemplateEntity extends Auditable {
     private Integer categoryId;
 
     @Column(name = "price", nullable = false)
-    private Float price;
+    private Long price;
 
-    @Column(name = "free_day", nullable = false)
-    private Byte freeDay;
+    @Column(name = "download_count", nullable = false)
+    private Byte downloadCount;
 
     @Column(name = "is_premium", nullable = false)
     private Boolean isPremium = false;
