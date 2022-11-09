@@ -7,4 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TemplateSaveRepository extends JpaRepository<TemplateSaveEntity, Integer>, BaseRepository {
+
+    boolean existsByUserIdAndTemplateId(Integer userId, Integer templateId);
+
 }

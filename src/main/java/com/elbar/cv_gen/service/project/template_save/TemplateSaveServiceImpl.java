@@ -5,12 +5,15 @@ import com.elbar.cv_gen.criteria.project.template_save.TemplateSaveCriteria;
 import com.elbar.cv_gen.dto.project.template_save.TemplateSaveCreateDTO;
 import com.elbar.cv_gen.dto.project.template_save.TemplateSaveDetailDTO;
 import com.elbar.cv_gen.dto.project.template_save.TemplateSaveGetDTO;
-import com.elbar.cv_gen.dto.project.template_save.TemplateSaveUpdateDTO;
+import com.elbar.cv_gen.entity.auth.auth_user.AuthUserEntity;
 import com.elbar.cv_gen.entity.project.template_save.TemplateSaveEntity;
+import com.elbar.cv_gen.exception.exception.InvalidValidationException;
 import com.elbar.cv_gen.exception.exception.NotFoundException;
 import com.elbar.cv_gen.mapper.project.template_save.TemplateSaveMapper;
 import com.elbar.cv_gen.repository.project.template_save.TemplateSaveRepository;
 import com.elbar.cv_gen.service.AbstractService;
+import com.elbar.cv_gen.service.auth.auth_user.AuthUserService;
+import com.elbar.cv_gen.service.project.template.TemplateService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -20,18 +23,28 @@ import java.util.List;
 @Service
 public class TemplateSaveServiceImpl extends AbstractService<TemplateSaveMapper, TemplateSaveRepository> implements TemplateSaveService {
 
-    public TemplateSaveServiceImpl(TemplateSaveMapper mapper, TemplateSaveRepository repository) {
+    private final TemplateService templateService;
+    private final AuthUserService userService;
+
+    public TemplateSaveServiceImpl(TemplateSaveMapper mapper, TemplateSaveRepository repository, TemplateService templateService, AuthUserService userService) {
         super(mapper, repository);
+        this.templateService = templateService;
+        this.userService = userService;
     }
 
     @Override
     public void create(TemplateSaveCreateDTO dto) {
-        // TODO template Service yozilgan keyin! checklari uchun kere
-    }
-
-    @Override
-    public void update(TemplateSaveUpdateDTO dto) {
-        // TODO template Service yozilgan keyin! checklari uchun kere
+        if (repository.existsByUserIdAndTemplateId(dto.getUserId(), dto.getTemplateId())) {
+            throw new RuntimeException("Already Created Template!");
+        }
+        if (!userService.existByIdAndIsNotBlocked(dto.getUserId())) {
+            throw new InvalidValidationException("Invalid User ID!");
+        }
+        if (!templateService.existById(dto.getTemplateId())) {
+            throw new NotFoundException("Template not found");
+        }
+        TemplateSaveEntity templateSaveEntity = mapper.toCreateDTO(dto);
+        repository.save(templateSaveEntity);
     }
 
     @Override

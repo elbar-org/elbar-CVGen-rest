@@ -17,4 +17,5 @@ public interface TemplateService extends GenericCUDService<TemplateCreateDTO, Te
 
     TemplateEntity getEntity(Integer id);
 
+    boolean existById(Integer id);
 }

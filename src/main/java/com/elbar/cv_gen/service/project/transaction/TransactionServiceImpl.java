@@ -77,6 +77,11 @@ public class TransactionServiceImpl extends AbstractService<TransactionMapper, T
     }
 
     @Override
+    public boolean existByTemplateIdAndUserId(Integer templateId, Integer userId) {
+        return false;
+    }
+
+    @Override
     public List<TransactionGetDTO> list(TransactionCriteria criteria) {
         return repository.findAll(
                         PageRequest.of(criteria.getPage(), criteria.getSize(),

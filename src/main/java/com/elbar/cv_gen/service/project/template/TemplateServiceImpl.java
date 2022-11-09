@@ -12,6 +12,7 @@ import com.elbar.cv_gen.exception.exception.NotFoundException;
 import com.elbar.cv_gen.mapper.project.template.TemplateMapper;
 import com.elbar.cv_gen.repository.project.template.TemplateRepository;
 import com.elbar.cv_gen.service.AbstractService;
+import com.elbar.cv_gen.service.auth.auth_block.AuthBlockService;
 import com.elbar.cv_gen.specification.project.template.TemplateBetweenSpecification;
 import com.elbar.cv_gen.specification.project.template.TemplateSearchSpecification;
 import org.springframework.beans.BeanUtils;
@@ -29,8 +30,12 @@ import java.util.Optional;
 @Service
 @Transactional
 public class TemplateServiceImpl extends AbstractService<TemplateMapper, TemplateRepository> implements TemplateService {
-    public TemplateServiceImpl(TemplateMapper mapper, TemplateRepository repository) {
+
+    private final AuthBlockService blockService;
+
+    public TemplateServiceImpl(TemplateMapper mapper, TemplateRepository repository, AuthBlockService blockService) {
         super(mapper, repository);
+        this.blockService = blockService;
     }
 
     @Override
@@ -93,5 +98,13 @@ public class TemplateServiceImpl extends AbstractService<TemplateMapper, Templat
                 .orElseThrow(() -> {
                     throw new NotFoundException("Template not found");
                 });
+    }
+
+    @Override
+    public boolean existById(Integer id) {
+        if (Objects.isNull(id) || id < 1) {
+            throw new InvalidValidationException("Invalid ID!");
+        }
+        return repository.existsById(id);
     }
 }

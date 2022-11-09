@@ -26,4 +26,8 @@ public interface AuthUserService extends GenericCUDService<AuthUserCreateDTO, Au
     boolean existById(Integer id);
 
     AuthUserEntity getEntity(Integer id);
+
+    AuthUserEntity getEntityIsNotBlocked(Integer id);
+
+    boolean existByIdAndIsNotBlocked(Integer id);
 }
