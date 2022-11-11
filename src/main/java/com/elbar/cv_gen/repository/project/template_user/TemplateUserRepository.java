@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TemplateUserRepository extends JpaRepository<TemplateUserEntity, Integer>,
         JpaSpecificationExecutor<TemplateUserEntity>, BaseRepository {
+
+    boolean existsByUserIdAndTemplateId(Integer userId, Integer templateId);
 }

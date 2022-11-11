@@ -8,6 +8,7 @@ import com.elbar.cv_gen.dto.project.template_user.TemplateUserCreateDTO;
 import com.elbar.cv_gen.dto.project.template_user.TemplateUserDetailDTO;
 import com.elbar.cv_gen.dto.project.template_user.TemplateUserGetDTO;
 import com.elbar.cv_gen.dto.project.template_user.TemplateUserUpdateDTO;
+import com.elbar.cv_gen.entity.auth.auth_user.AuthUserEntity;
 import com.elbar.cv_gen.entity.project.template_user.TemplateUserEntity;
 import com.elbar.cv_gen.exception.exception.InvalidValidationException;
 import com.elbar.cv_gen.exception.exception.NotFoundException;
@@ -15,6 +16,8 @@ import com.elbar.cv_gen.mapper.project.template_user.TemplateUserMapper;
 import com.elbar.cv_gen.repository.project.template_user.TemplateUserRepository;
 import com.elbar.cv_gen.service.AbstractService;
 import com.elbar.cv_gen.service.auth.auth_user.AuthUserService;
+import com.elbar.cv_gen.service.project.template.TemplateService;
+import com.elbar.cv_gen.service.project.transaction.TransactionService;
 import com.elbar.cv_gen.specification.project.templateUser.TemplateUserBetweenSpecification;
 import com.elbar.cv_gen.specification.project.templateUser.TemplateUserSearchSpecification;
 import org.springframework.data.domain.PageRequest;
@@ -28,18 +31,36 @@ import java.util.Objects;
 public class TemplateUserServiceImpl extends AbstractService<TemplateUserMapper, TemplateUserRepository> implements TemplateUserService {
 
     private final AuthUserService userService;
+    private final TemplateService templateService;
+    private final TransactionService transactionService;
 
-    public TemplateUserServiceImpl(TemplateUserMapper mapper, TemplateUserRepository repository, AuthUserService userService) {
+    public TemplateUserServiceImpl(TemplateUserMapper mapper, TemplateUserRepository repository, AuthUserService userService, TemplateService templateService, TransactionService transactionService) {
         super(mapper, repository);
         this.userService = userService;
+        this.templateService = templateService;
+        this.transactionService = transactionService;
     }
 
     @Override
     public void create(TemplateUserCreateDTO dto) {
-        // TODO template Service yozilgan keyin! checklari uchun kere
-        if (!userService.existById(dto.getUserId())) {
-            throw new NotFoundException("User not found");
+        if (repository.existsByUserIdAndTemplateId(dto.getUserId(), dto.getTemplateId())) {
+            throw new RuntimeException("Already Created Template User");
         }
+        AuthUserEntity entity = userService.getEntityIsNotBlocked(dto.getUserId());
+        if (!templateService.existById(dto.getTemplateId())) {
+            throw new NotFoundException("Template not found");
+        }
+        if (entity.getDownloadCount() > 0) {
+            save(dto);
+        } else {
+            if (!transactionService.existByTemplateIdAndUserId(dto.getTemplateId(), dto.getUserId())) {
+                throw new RuntimeException("user doesn't buy template!");
+            }
+            save(dto);
+        }
+    }
+
+    private void save(TemplateUserCreateDTO dto) {
         TemplateUserEntity templateUserEntity = mapper.toCreateDTO(dto);
         templateUserEntity.setIsEdit(false);
         repository.save(templateUserEntity);

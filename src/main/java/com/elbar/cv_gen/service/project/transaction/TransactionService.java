@@ -19,4 +19,6 @@ public interface TransactionService extends GenericGLService<TransactionGetDTO, 
 
     TransactionDetailDTO detail(Integer id);
 
+    boolean existByTemplateIdAndUserId(Integer templateId, Integer userId);
+
 }

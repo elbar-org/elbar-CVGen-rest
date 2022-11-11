@@ -15,4 +15,6 @@ public interface AuthBlockService extends GenericGLService<AuthBlockGetDTO, Auth
 
     AuthBlockDetailDTO detail(Integer id);
 
+    boolean userIdBlocked(Integer id);
+
 }

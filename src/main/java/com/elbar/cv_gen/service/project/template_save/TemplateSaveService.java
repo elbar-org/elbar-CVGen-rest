@@ -9,8 +9,12 @@ import com.elbar.cv_gen.service.BaseService;
 import com.elbar.cv_gen.service.GenericCUDService;
 import com.elbar.cv_gen.service.GenericGLService;
 
-public interface TemplateSaveService extends GenericCUDService<TemplateSaveCreateDTO, TemplateSaveUpdateDTO, Integer>,
-        GenericGLService<TemplateSaveGetDTO, TemplateSaveCriteria, Integer>, BaseService {
+public interface TemplateSaveService extends GenericGLService<TemplateSaveGetDTO, TemplateSaveCriteria, Integer>,
+        BaseService {
+
+    void create(TemplateSaveCreateDTO dto);
+
+    void delete(Integer id);
 
     TemplateSaveDetailDTO detail(Integer id);
 }

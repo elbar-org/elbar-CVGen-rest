@@ -66,6 +66,17 @@ public class AuthBlockServiceImpl extends AbstractService<AuthBlockMapper, AuthB
     }
 
     @Override
+    public boolean userIdBlocked(Integer id) {
+        AuthBlockEntity entity = repository.findByUserId(id)
+                .orElse(null);
+        if (entity == null) {
+            return true;
+        } else {
+            return entity.isDeleted();
+        }
+    }
+
+    @Override
     public List<AuthBlockGetDTO> list(AuthBlockCriteria criteria) {
         return repository.findAll(PageRequest.of(criteria.getPage(),
                         criteria.getSize()))

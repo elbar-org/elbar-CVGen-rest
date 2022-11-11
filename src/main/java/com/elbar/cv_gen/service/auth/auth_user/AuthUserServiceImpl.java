@@ -14,6 +14,8 @@ import com.elbar.cv_gen.exception.exception.NotFoundException;
 import com.elbar.cv_gen.mapper.auth.auth_user.AuthUserMapper;
 import com.elbar.cv_gen.repository.auth.auth_user.AuthUserRepository;
 import com.elbar.cv_gen.service.AbstractService;
+import com.elbar.cv_gen.service.auth.auth_block.AuthBlockService;
+import com.elbar.cv_gen.service.project.transaction.TransactionService;
 import com.elbar.cv_gen.specification.auth.auth_user.AuthUserBetweenSpecification;
 import com.elbar.cv_gen.specification.auth.auth_user.AuthUserSearchSpecification;
 import com.elbar.cv_gen.utils.BaseUtils;
@@ -35,10 +37,14 @@ import java.util.Objects;
 public class AuthUserServiceImpl extends AbstractService<AuthUserMapper, AuthUserRepository> implements AuthUserService {
 
     private final PasswordEncoderConfigurer encoderConfigurer;
+    private final AuthBlockService blockService;
+    private final TransactionService transactionService;
 
-    public AuthUserServiceImpl(AuthUserMapper mapper, AuthUserRepository repository, PasswordEncoderConfigurer encoderConfigurer) {
+    public AuthUserServiceImpl(AuthUserMapper mapper, AuthUserRepository repository, PasswordEncoderConfigurer encoderConfigurer, AuthBlockService blockService, TransactionService transactionService) {
         super(mapper, repository);
         this.encoderConfigurer = encoderConfigurer;
+        this.blockService = blockService;
+        this.transactionService = transactionService;
     }
 
     @Override
@@ -50,7 +56,7 @@ public class AuthUserServiceImpl extends AbstractService<AuthUserMapper, AuthUse
         authUserEntity.setRole(RolesEnum.USER);
         authUserEntity.setPassword(new PasswordEncoderConfigurer().encoder().encode(dto.getPassword()));
         authUserEntity.setStatus(StatusEnum.NO_ACTIVE);
-        authUserEntity.setFreeChance(3);
+        authUserEntity.setDownloadCount(0);
         authUserEntity.setLoginTryCount(0);
         repository.save(authUserEntity);
     }
@@ -132,6 +138,29 @@ public class AuthUserServiceImpl extends AbstractService<AuthUserMapper, AuthUse
     }
 
     @Override
+    public AuthUserEntity getEntityIsNotBlocked(Integer id) {
+        AuthUserEntity entity = repository.findById(id).
+                orElseThrow(() -> {
+                    throw new NotFoundException("Auth User not found");
+                });
+        if (blockService.userIdBlocked(entity.getId())) {
+            throw new RuntimeException("User is blocked");
+        }
+        return entity;
+    }
+
+    @Override
+    public boolean existByIdAndIsNotBlocked(Integer id) {
+        if (Objects.isNull(id) || id < 1) {
+            throw new InvalidValidationException("Invalid ID!");
+        }
+        if (!repository.existsById(id)) {
+            throw new NotFoundException("Auth User not found");
+        }
+        return blockService.userIdBlocked(id);
+    }
+
+    @Override
     public List<AuthUserGetDTO> list(AuthUserCriteria criteria) {
         return repository.findAll(PageRequest.of(criteria.getPage(), criteria.getSize(),
                         criteria.getSort(), criteria.getFieldsEnum().getValue()))
@@ -176,5 +205,12 @@ public class AuthUserServiceImpl extends AbstractService<AuthUserMapper, AuthUse
                 .disabled(false)
                 .credentialsExpired(false)
                 .build();
+    }
+
+    private boolean checkId(Integer id) {
+        if (Objects.isNull(id) || id < 1) {
+            throw new InvalidValidationException("Invalid ID!");
+        }
+        return true;
     }
 }
