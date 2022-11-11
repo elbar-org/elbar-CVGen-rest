@@ -14,6 +14,8 @@ import com.elbar.cv_gen.repository.project.transaction.TransactionRepository;
 import com.elbar.cv_gen.service.AbstractService;
 import com.elbar.cv_gen.service.auth.auth_user.AuthUserService;
 import com.elbar.cv_gen.service.project.template.TemplateService;
+import com.elbar.cv_gen.specification.project.transaction.TransactionSpecification;
+import com.elbar.cv_gen.utils.BaseUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -46,7 +48,7 @@ public class TransactionServiceImpl extends AbstractService<TransactionMapper, T
     public void delete(@IdConstraint Integer id) {
         TransactionEntity entity = repository.findById(id)
                 .orElseThrow(() -> {
-                    throw new RuntimeException("Transaction not found");
+                    throw new NotFoundException("Transaction not found");
                 });
         entity.setUpdatedAt(LocalDateTime.now());
         entity.setUpdatedBy(-1);
@@ -78,7 +80,9 @@ public class TransactionServiceImpl extends AbstractService<TransactionMapper, T
 
     @Override
     public boolean existByTemplateIdAndUserId(Integer templateId, Integer userId) {
-        return false;
+        BaseUtils.checkId(templateId);
+        BaseUtils.checkId(userId);
+        return repository.existsByTemplateIdAndUserId(templateId, userId);
     }
 
     @Override
@@ -93,11 +97,21 @@ public class TransactionServiceImpl extends AbstractService<TransactionMapper, T
 
     @Override
     public List<TransactionGetDTO> list_with_search(SearchCriteria criteria) {
-        return null;
+        return repository.findAll(
+                        new TransactionSpecification.SearchPredicate(criteria),
+                        PageRequest.of(criteria.getPage(), criteria.getSize()))
+                .stream()
+                .map(mapper::fromGetDTO)
+                .toList();
     }
 
     @Override
     public List<TransactionGetDTO> list_with_between(BetweenCriteria criteria) {
-        return null;
+        return repository.findAll(
+                        new TransactionSpecification.BetweenPredicate(criteria),
+                        PageRequest.of(criteria.getPage(), criteria.getSize())
+                ).stream()
+                .map(mapper::fromGetDTO)
+                .toList();
     }
 }

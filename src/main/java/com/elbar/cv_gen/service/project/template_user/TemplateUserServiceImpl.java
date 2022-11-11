@@ -10,6 +10,7 @@ import com.elbar.cv_gen.dto.project.template_user.TemplateUserGetDTO;
 import com.elbar.cv_gen.dto.project.template_user.TemplateUserUpdateDTO;
 import com.elbar.cv_gen.entity.auth.auth_user.AuthUserEntity;
 import com.elbar.cv_gen.entity.project.template_user.TemplateUserEntity;
+import com.elbar.cv_gen.exception.exception.AlreadyCreatedException;
 import com.elbar.cv_gen.exception.exception.InvalidValidationException;
 import com.elbar.cv_gen.exception.exception.NotFoundException;
 import com.elbar.cv_gen.mapper.project.template_user.TemplateUserMapper;
@@ -44,7 +45,7 @@ public class TemplateUserServiceImpl extends AbstractService<TemplateUserMapper,
     @Override
     public void create(TemplateUserCreateDTO dto) {
         if (repository.existsByUserIdAndTemplateId(dto.getUserId(), dto.getTemplateId())) {
-            throw new RuntimeException("Already Created Template User");
+            throw new AlreadyCreatedException("Already Created Template User");
         }
         AuthUserEntity entity = userService.getEntityIsNotBlocked(dto.getUserId());
         if (!templateService.existById(dto.getTemplateId())) {
@@ -54,7 +55,7 @@ public class TemplateUserServiceImpl extends AbstractService<TemplateUserMapper,
             save(dto);
         } else {
             if (!transactionService.existByTemplateIdAndUserId(dto.getTemplateId(), dto.getUserId())) {
-                throw new RuntimeException("user doesn't buy template!");
+                throw new InvalidValidationException("user doesn't buy template!");
             }
             save(dto);
         }

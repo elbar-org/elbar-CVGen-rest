@@ -9,4 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TransactionRepository extends JpaRepository<TransactionEntity, Integer>,
         JpaSpecificationExecutor<TransactionEntity>, BaseRepository {
+
+    boolean existsByTemplateIdAndUserId(Integer templateId, Integer userId);
+
 }
