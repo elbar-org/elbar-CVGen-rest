@@ -23,6 +23,6 @@ public class TemplateRatingEntity extends Auditable {
     @Column(name = "buy_count", nullable = false)
     private Integer buyCount = 0;
 
-    @Column(name = "template_id", nullable = false)
+    @Column(name = "template_id", nullable = false, unique = true)
     private Integer templateId;
 }
