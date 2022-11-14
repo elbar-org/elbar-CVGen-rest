@@ -35,7 +35,7 @@ public class AuthCardServiceImpl  extends AbstractService<AuthCardMapper, AuthCa
     public void create(AuthCardCreateDto dto) {
         if (!userRepository.existsByIdAndDeletedFalse(dto.getUserId()))
              throw new NotFoundException("User not found");
-        if (!repository.existsByUserIdAndCardNumber(dto.getUserId(),dto.getCardNumber()))
+        if (repository.existsByUserIdAndCardNumber(dto.getUserId(),dto.getCardNumber()))
              throw new AlreadyCreatedException("Already exist this kind of card with user");
         LocalDate localDate = LocalDate.parse(dto.getExpire(), DateTimeFormatter.ofPattern("MM/yyyy"));
         if (localDate.isAfter(LocalDate.now()))

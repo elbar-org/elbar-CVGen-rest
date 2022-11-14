@@ -60,7 +60,7 @@ public class AuthPaymentServiceImpl  extends AbstractService<AuthPaymentMapper, 
                throw new NotFoundException("Template not found");
         if(!transactionRepository.existsByIdAndDeletedFalse(dto.getTransactionId()))
                throw new NotFoundException("Transaction not found");
-        if(!repository.existsByUserIdAndTransactionIdAndTemplateIdAndDeletedFalse(
+        if(repository.existsByUserIdAndTransactionIdAndTemplateIdAndDeletedFalse(
                 dto.getUserId(),dto.getTransactionId(), dto.getTemplateId()))
                throw new AlreadyCreatedException("Already exist");
         UserPaymentEntity entity = mapper.toCreateDTO(dto);
