@@ -11,5 +11,6 @@ public interface TransactionRepository extends JpaRepository<TransactionEntity, 
         JpaSpecificationExecutor<TransactionEntity>, BaseRepository {
 
     boolean existsByTemplateIdAndUserId(Integer templateId, Integer userId);
+    boolean existsByIdAndDeletedFalse(Integer id);
 
 }

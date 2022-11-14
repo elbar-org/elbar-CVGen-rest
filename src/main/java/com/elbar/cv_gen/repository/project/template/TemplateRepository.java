@@ -10,5 +10,6 @@ import java.util.Optional;
 
 @Repository
 public interface TemplateRepository extends JpaRepository<TemplateEntity, Integer>, JpaSpecificationExecutor<TemplateEntity>, BaseRepository {
+    boolean existsByIdAndDeletedFalse(Integer id);
     Optional<TemplateEntity> findByTitle(String title);
 }

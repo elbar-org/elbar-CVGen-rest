@@ -13,6 +13,7 @@ public interface AuthUserRepository extends JpaRepository<AuthUserEntity, Intege
         JpaSpecificationExecutor<AuthUserEntity>, BaseRepository {
 
     boolean existsByPhoneEquals(String phone);
+    boolean existsByIdAndDeletedFalse(Integer id);
 
     Optional<AuthUserEntity> findByPhoneEquals(String phone);
 
