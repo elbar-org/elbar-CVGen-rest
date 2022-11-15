@@ -12,6 +12,7 @@ import com.elbar.cv_gen.exception.exception.NotFoundException;
 import com.elbar.cv_gen.mapper.project.transaction.TransactionMapper;
 import com.elbar.cv_gen.repository.project.transaction.TransactionRepository;
 import com.elbar.cv_gen.service.AbstractService;
+import com.elbar.cv_gen.service.auth.auth_card.AuthCardService;
 import com.elbar.cv_gen.service.auth.auth_user.AuthUserService;
 import com.elbar.cv_gen.service.project.template.TemplateService;
 import com.elbar.cv_gen.specification.project.transaction.TransactionSpecification;
@@ -27,18 +28,25 @@ public class TransactionServiceImpl extends AbstractService<TransactionMapper, T
 
     private final AuthUserService userService;
     private final TemplateService templateService;
+    private final AuthCardService authCardService;
 
-    public TransactionServiceImpl(TransactionMapper mapper, TransactionRepository repository, AuthUserService userService, TemplateService templateService) {
+    public TransactionServiceImpl(TransactionMapper mapper, TransactionRepository repository, AuthUserService userService, TemplateService templateService, AuthCardService authCardService) {
         super(mapper, repository);
         this.userService = userService;
         this.templateService = templateService;
+        this.authCardService = authCardService;
     }
 
     @Override
     public void create(TransactionCreateDTO dto) {
-        // TODO template va card check
         if (!userService.existById(dto.getUserId())) {
             throw new NotFoundException("User not found");
+        }
+        if (!authCardService.existCardId(dto.getCardId())) {
+            throw new NotFoundException("Card not found");
+        }
+        if (!templateService.existById(dto.getTemplateId())) {
+            throw new NotFoundException("Template not found");
         }
         TransactionEntity transactionEntity = mapper.toCreateDTO(dto);
         repository.save(transactionEntity);
@@ -74,7 +82,7 @@ public class TransactionServiceImpl extends AbstractService<TransactionMapper, T
         TransactionDetailDTO transactionDetailDTO = mapper.fromDetailDTO(entity);
         transactionDetailDTO.setTemplate(templateService.getEntity(entity.getTemplateId()));
         transactionDetailDTO.setUser(userService.getEntity(entity.getUserId()));
-        // TODO card wrote and add
+        transactionDetailDTO.setCard(authCardService.getEntity(entity.getCardId()));
         return transactionDetailDTO;
     }
 

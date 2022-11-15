@@ -14,6 +14,7 @@ import java.util.Optional;
 @Repository
 public interface AuthCardRepository extends JpaRepository<AuthCardEntity, Integer>, BaseRepository {
     boolean existsByUserIdAndCardNumber(Integer userId, String cardNumber);
+
     @Query("from AuthCardEntity where id = ?1 and isDeleted = false")
     boolean existsByIdAndIsDeletedFalse(Integer id);
 

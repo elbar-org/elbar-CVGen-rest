@@ -11,6 +11,7 @@ import com.elbar.cv_gen.mapper.auth.auth_card.AuthCardMapper;
 import com.elbar.cv_gen.repository.auth.auth_card.AuthCardRepository;
 import com.elbar.cv_gen.repository.auth.auth_user.AuthUserRepository;
 import com.elbar.cv_gen.service.AbstractService;
+import com.elbar.cv_gen.utils.BaseUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -82,5 +83,18 @@ public class AuthCardServiceImpl  extends AbstractService<AuthCardMapper, AuthCa
                 .stream()
                 .map(mapper::fromGetDTO)
                 .toList();
+    }
+
+    @Override
+    public boolean existCardId(Integer cardId) {
+        BaseUtils.checkId(cardId);
+        return repository.existsById(cardId);
+    }
+
+    @Override
+    public AuthCardEntity getEntity(Integer id) {
+        BaseUtils.checkId(id);
+        return repository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Card not found"));
     }
 }
