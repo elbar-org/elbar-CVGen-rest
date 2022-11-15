@@ -46,7 +46,7 @@ public class AuthPaymentServiceImpl  extends AbstractService<AuthPaymentMapper, 
     public List<AuthPaymentGetDto> list(AuthPaymentCriteria criteria) {
         Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize(), criteria.getSort());
         return repository
-                .findAllByDeletedFalse(pageable)
+                .findAll(pageable)
                 .stream()
                 .map(mapper::fromGetDTO)
                 .toList();

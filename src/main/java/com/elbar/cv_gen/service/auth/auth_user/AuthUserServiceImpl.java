@@ -38,13 +38,13 @@ public class AuthUserServiceImpl extends AbstractService<AuthUserMapper, AuthUse
 
     private final PasswordEncoderConfigurer encoderConfigurer;
     private final AuthBlockService blockService;
-    private final TransactionService transactionService;
+//    private final TransactionService transactionService;
 
-    public AuthUserServiceImpl(AuthUserMapper mapper, AuthUserRepository repository, PasswordEncoderConfigurer encoderConfigurer, AuthBlockService blockService, TransactionService transactionService) {
+    public AuthUserServiceImpl(AuthUserMapper mapper, AuthUserRepository repository, PasswordEncoderConfigurer encoderConfigurer, AuthBlockService blockService/*, TransactionService transactionService*/) {
         super(mapper, repository);
         this.encoderConfigurer = encoderConfigurer;
         this.blockService = blockService;
-        this.transactionService = transactionService;
+//        this.transactionService = transactionService;
     }
 
     @Override

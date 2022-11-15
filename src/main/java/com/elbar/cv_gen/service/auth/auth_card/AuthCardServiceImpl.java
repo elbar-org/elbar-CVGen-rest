@@ -48,7 +48,7 @@ public class AuthCardServiceImpl  extends AbstractService<AuthCardMapper, AuthCa
 
     @Override
     public void update(AuthCardUpdateDto dto) {
-        if (!repository.existsByIdAndDeletedFalse(dto.getId()))
+        if (!repository.existsByIdAndIsDeletedFalse(dto.getId()))
             throw new NotFoundException("Card not found");
         LocalDate localDate = LocalDate.parse(dto.getExpire(), DateTimeFormatter.ofPattern("MM/yyyy"));
         if (localDate.isAfter(LocalDate.now()))
@@ -78,7 +78,7 @@ public class AuthCardServiceImpl  extends AbstractService<AuthCardMapper, AuthCa
     public List<AuthCardDto> list(AuthCardCriteria criteria) {
         Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize(), criteria.getSort());
         return repository
-                .findAllByDeletedFalse(pageable)
+                .findAll(pageable)
                 .stream()
                 .map(mapper::fromGetDTO)
                 .toList();
