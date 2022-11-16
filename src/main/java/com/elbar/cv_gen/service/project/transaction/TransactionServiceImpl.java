@@ -12,8 +12,11 @@ import com.elbar.cv_gen.exception.exception.NotFoundException;
 import com.elbar.cv_gen.mapper.project.transaction.TransactionMapper;
 import com.elbar.cv_gen.repository.project.transaction.TransactionRepository;
 import com.elbar.cv_gen.service.AbstractService;
+import com.elbar.cv_gen.service.auth.auth_card.AuthCardService;
 import com.elbar.cv_gen.service.auth.auth_user.AuthUserService;
 import com.elbar.cv_gen.service.project.template.TemplateService;
+import com.elbar.cv_gen.specification.project.transaction.TransactionSpecification;
+import com.elbar.cv_gen.utils.BaseUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -25,18 +28,25 @@ public class TransactionServiceImpl extends AbstractService<TransactionMapper, T
 
     private final AuthUserService userService;
     private final TemplateService templateService;
+    private final AuthCardService authCardService;
 
-    public TransactionServiceImpl(TransactionMapper mapper, TransactionRepository repository, AuthUserService userService, TemplateService templateService) {
+    public TransactionServiceImpl(TransactionMapper mapper, TransactionRepository repository, AuthUserService userService, TemplateService templateService, AuthCardService authCardService) {
         super(mapper, repository);
         this.userService = userService;
         this.templateService = templateService;
+        this.authCardService = authCardService;
     }
 
     @Override
     public void create(TransactionCreateDTO dto) {
-        // TODO template va card check
         if (!userService.existById(dto.getUserId())) {
             throw new NotFoundException("User not found");
+        }
+        if (!authCardService.existCardId(dto.getCardId())) {
+            throw new NotFoundException("Card not found");
+        }
+        if (!templateService.existById(dto.getTemplateId())) {
+            throw new NotFoundException("Template not found");
         }
         TransactionEntity transactionEntity = mapper.toCreateDTO(dto);
         repository.save(transactionEntity);
@@ -46,7 +56,7 @@ public class TransactionServiceImpl extends AbstractService<TransactionMapper, T
     public void delete(@IdConstraint Integer id) {
         TransactionEntity entity = repository.findById(id)
                 .orElseThrow(() -> {
-                    throw new RuntimeException("Transaction not found");
+                    throw new NotFoundException("Transaction not found");
                 });
         entity.setUpdatedAt(LocalDateTime.now());
         entity.setUpdatedBy(-1);
@@ -72,13 +82,15 @@ public class TransactionServiceImpl extends AbstractService<TransactionMapper, T
         TransactionDetailDTO transactionDetailDTO = mapper.fromDetailDTO(entity);
         transactionDetailDTO.setTemplate(templateService.getEntity(entity.getTemplateId()));
         transactionDetailDTO.setUser(userService.getEntity(entity.getUserId()));
-        // TODO card wrote and add
+        transactionDetailDTO.setCard(authCardService.getEntity(entity.getCardId()));
         return transactionDetailDTO;
     }
 
     @Override
     public boolean existByTemplateIdAndUserId(Integer templateId, Integer userId) {
-        return false;
+        BaseUtils.checkId(templateId);
+        BaseUtils.checkId(userId);
+        return repository.existsByTemplateIdAndUserId(templateId, userId);
     }
 
     @Override
@@ -93,11 +105,21 @@ public class TransactionServiceImpl extends AbstractService<TransactionMapper, T
 
     @Override
     public List<TransactionGetDTO> list_with_search(SearchCriteria criteria) {
-        return null;
+        return repository.findAll(
+                        new TransactionSpecification.SearchPredicate(criteria),
+                        PageRequest.of(criteria.getPage(), criteria.getSize()))
+                .stream()
+                .map(mapper::fromGetDTO)
+                .toList();
     }
 
     @Override
     public List<TransactionGetDTO> list_with_between(BetweenCriteria criteria) {
-        return null;
+        return repository.findAll(
+                        new TransactionSpecification.BetweenPredicate(criteria),
+                        PageRequest.of(criteria.getPage(), criteria.getSize())
+                ).stream()
+                .map(mapper::fromGetDTO)
+                .toList();
     }
 }

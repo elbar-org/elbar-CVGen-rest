@@ -7,6 +7,7 @@ import com.elbar.cv_gen.dto.project.template_save.TemplateSaveDetailDTO;
 import com.elbar.cv_gen.dto.project.template_save.TemplateSaveGetDTO;
 import com.elbar.cv_gen.entity.auth.auth_user.AuthUserEntity;
 import com.elbar.cv_gen.entity.project.template_save.TemplateSaveEntity;
+import com.elbar.cv_gen.exception.exception.AlreadyCreatedException;
 import com.elbar.cv_gen.exception.exception.InvalidValidationException;
 import com.elbar.cv_gen.exception.exception.NotFoundException;
 import com.elbar.cv_gen.mapper.project.template_save.TemplateSaveMapper;
@@ -35,7 +36,7 @@ public class TemplateSaveServiceImpl extends AbstractService<TemplateSaveMapper,
     @Override
     public void create(TemplateSaveCreateDTO dto) {
         if (repository.existsByUserIdAndTemplateId(dto.getUserId(), dto.getTemplateId())) {
-            throw new RuntimeException("Already Created Template!");
+            throw new AlreadyCreatedException("Already Created Template!");
         }
         if (!userService.existByIdAndIsNotBlocked(dto.getUserId())) {
             throw new InvalidValidationException("Invalid User ID!");
