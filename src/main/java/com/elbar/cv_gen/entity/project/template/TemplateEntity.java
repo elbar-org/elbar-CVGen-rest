@@ -2,11 +2,15 @@ package com.elbar.cv_gen.entity.project.template;
 
 import com.elbar.cv_gen.entity.Auditable;
 import lombok.*;
+import org.hibernate.annotations.Type;
 import org.hibernate.annotations.Where;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 @Getter
 @Setter
@@ -23,6 +27,9 @@ public class TemplateEntity extends Auditable {
     @Column(name = "html", nullable = false, columnDefinition = "text")
     private String html;
 
+    @Column(name = "fields", nullable = false, columnDefinition = "text")
+    private String fields;
+
     @Column(name = "category_id", nullable = false)
     private Integer categoryId;
 
@@ -30,7 +37,7 @@ public class TemplateEntity extends Auditable {
     private Long price;
 
     @Column(name = "download_count", nullable = false)
-    private Byte downloadCount;
+    private Integer downloadCount;
 
     @Column(name = "is_premium", nullable = false)
     private Boolean isPremium = false;

@@ -15,7 +15,6 @@ import com.elbar.cv_gen.mapper.auth.auth_user.AuthUserMapper;
 import com.elbar.cv_gen.repository.auth.auth_user.AuthUserRepository;
 import com.elbar.cv_gen.service.AbstractService;
 import com.elbar.cv_gen.service.auth.auth_block.AuthBlockService;
-import com.elbar.cv_gen.service.project.transaction.TransactionService;
 import com.elbar.cv_gen.specification.auth.auth_user.AuthUserBetweenSpecification;
 import com.elbar.cv_gen.specification.auth.auth_user.AuthUserSearchSpecification;
 import com.elbar.cv_gen.utils.BaseUtils;
@@ -38,13 +37,11 @@ public class AuthUserServiceImpl extends AbstractService<AuthUserMapper, AuthUse
 
     private final PasswordEncoderConfigurer encoderConfigurer;
     private final AuthBlockService blockService;
-    private final TransactionService transactionService;
 
-    public AuthUserServiceImpl(AuthUserMapper mapper, AuthUserRepository repository, PasswordEncoderConfigurer encoderConfigurer, AuthBlockService blockService, TransactionService transactionService) {
+    public AuthUserServiceImpl(AuthUserMapper mapper, AuthUserRepository repository, PasswordEncoderConfigurer encoderConfigurer, AuthBlockService blockService) {
         super(mapper, repository);
         this.encoderConfigurer = encoderConfigurer;
         this.blockService = blockService;
-        this.transactionService = transactionService;
     }
 
     @Override

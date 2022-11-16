@@ -2,6 +2,8 @@ package com.elbar.cv_gen.dto.project.template;
 
 import com.elbar.cv_gen.dto.GenericDTO;
 import lombok.*;
+import nonapi.io.github.classgraph.utils.LogNode;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 
 @Getter
 @Setter
@@ -13,11 +15,13 @@ public class TemplateGetDTO extends GenericDTO {
 
     private String html;
 
+    private JSONObject fields;
+
     private Integer categoryId;
 
-    private Float price;
+    private Long price;
 
-    private Byte freeDay;
+    private Integer downloadCount;
 
     private Boolean isPremium;
 

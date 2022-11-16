@@ -51,6 +51,7 @@ public class SecurityConfigurer {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
+                .cors().disable()
                 .authorizeRequests(auth -> auth
                         .mvcMatchers(WHITE_LIST).permitAll()
                         .anyRequest().authenticated()

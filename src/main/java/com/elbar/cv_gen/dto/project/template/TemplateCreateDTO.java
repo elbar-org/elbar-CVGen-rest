@@ -2,6 +2,7 @@ package com.elbar.cv_gen.dto.project.template;
 
 import com.elbar.cv_gen.dto.BaseDTO;
 import lombok.*;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -20,14 +21,17 @@ public class TemplateCreateDTO implements BaseDTO {
     @NotBlank(message = "template html cannot be null")
     private String html;
 
+    @NotBlank(message = "template fields cannot be null")
+    private String fields;
+
     @NotNull(message = "template category id cannot be null")
     private Integer categoryId;
 
     @NotNull(message = "template price cannot be null")
-    private Float price;
+    private Long price;
 
     @NotNull(message = "template free day cannot be null")
-    private Byte freeDay;
+    private Integer downloadCount;
 
     @NotNull(message = "template is premium cannot be null")
     private Boolean isPremium;
