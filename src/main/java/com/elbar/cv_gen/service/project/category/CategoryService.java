@@ -11,4 +11,7 @@ import com.elbar.cv_gen.service.GenericGLService;
 import com.elbar.cv_gen.service.GenericSpecificationService;
 
 public interface CategoryService extends GenericCUDService<CategoryCreateDTO, CategoryUpdateDTO, Integer>, GenericGLService<CategoryGetDTO, CategoryCriteria, Integer>, GenericSpecificationService<SearchCriteria, BetweenCriteria, CategoryGetDTO> {
+
+    String getCategoryTitle(Integer id);
+
 }

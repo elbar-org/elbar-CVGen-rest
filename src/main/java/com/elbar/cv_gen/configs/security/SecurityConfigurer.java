@@ -34,6 +34,7 @@ public class SecurityConfigurer {
 
     public static final String[] WHITE_LIST = {
             "/swagger-ui/**",
+            "/api/v1/template/**",
             "/swagger-documentation/**",
             BaseUtils.PATH + "/auth_user/login",
             BaseUtils.PATH + "/auth_user/create"

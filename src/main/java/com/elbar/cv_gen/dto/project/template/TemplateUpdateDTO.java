@@ -27,6 +27,9 @@ public class TemplateUpdateDTO extends GenericDTO {
     @NotNull(message = "template category id cannot be null")
     private Integer categoryId;
 
+    @NotBlank(message = "template imagePath cannot be null")
+    private String imagePath;
+
     @NotNull(message = "template price cannot be null")
     private Long price;
 

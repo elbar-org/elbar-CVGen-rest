@@ -7,6 +7,7 @@ import com.elbar.cv_gen.dto.project.category.CategoryCreateDTO;
 import com.elbar.cv_gen.dto.project.category.CategoryGetDTO;
 import com.elbar.cv_gen.dto.project.category.CategoryUpdateDTO;
 import com.elbar.cv_gen.entity.project.category.CategoryEntity;
+import com.elbar.cv_gen.exception.exception.NotFoundException;
 import com.elbar.cv_gen.mapper.project.category.CategoryMapper;
 import com.elbar.cv_gen.repository.project.category.CategoryRepository;
 import com.elbar.cv_gen.service.AbstractService;
@@ -26,6 +27,7 @@ import java.util.Optional;
 @Service
 @Transactional
 public class CategoryServiceImpl extends AbstractService<CategoryMapper, CategoryRepository> implements CategoryService {
+
     public CategoryServiceImpl(CategoryMapper mapper, CategoryRepository repository) {
         super(mapper, repository);
     }
@@ -79,5 +81,12 @@ public class CategoryServiceImpl extends AbstractService<CategoryMapper, Categor
     public List<CategoryGetDTO> list_with_between(BetweenCriteria criteria) {
         List<CategoryEntity> entities = repository.findAll(new CategoryBetweenSpecification(criteria));
         return entities.stream().map(mapper::fromGetDTO).toList();
+    }
+
+    @Override
+    public String getCategoryTitle(Integer id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Category not found"))
+                .getTitle();
     }
 }

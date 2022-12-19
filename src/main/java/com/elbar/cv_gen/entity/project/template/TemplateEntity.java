@@ -33,6 +33,9 @@ public class TemplateEntity extends Auditable {
     @Column(name = "category_id", nullable = false)
     private Integer categoryId;
 
+    @Column(name = "image_path", nullable = false)
+    private String imagePath;
+
     @Column(name = "price", nullable = false)
     private Long price;
 

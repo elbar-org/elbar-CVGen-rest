@@ -5,6 +5,7 @@ import com.elbar.cv_gen.criteria.SearchCriteria;
 import com.elbar.cv_gen.criteria.project.template.TemplateCriteria;
 import com.elbar.cv_gen.dto.project.template.TemplateCreateDTO;
 import com.elbar.cv_gen.dto.project.template.TemplateGetDTO;
+import com.elbar.cv_gen.dto.project.template.TemplateTiDTO;
 import com.elbar.cv_gen.dto.project.template.TemplateUpdateDTO;
 import com.elbar.cv_gen.entity.project.template.TemplateEntity;
 import com.elbar.cv_gen.exception.exception.InvalidValidationException;
@@ -13,6 +14,7 @@ import com.elbar.cv_gen.mapper.project.template.TemplateMapper;
 import com.elbar.cv_gen.repository.project.template.TemplateRepository;
 import com.elbar.cv_gen.service.AbstractService;
 import com.elbar.cv_gen.service.auth.auth_block.AuthBlockService;
+import com.elbar.cv_gen.service.project.category.CategoryService;
 import com.elbar.cv_gen.specification.project.template.TemplateBetweenSpecification;
 import com.elbar.cv_gen.specification.project.template.TemplateSearchSpecification;
 import org.springframework.beans.BeanUtils;
@@ -32,10 +34,12 @@ import java.util.Optional;
 public class TemplateServiceImpl extends AbstractService<TemplateMapper, TemplateRepository> implements TemplateService {
 
     private final AuthBlockService blockService;
+    private final CategoryService categoryService;
 
-    public TemplateServiceImpl(TemplateMapper mapper, TemplateRepository repository, AuthBlockService blockService) {
+    public TemplateServiceImpl(TemplateMapper mapper, TemplateRepository repository, AuthBlockService blockService, CategoryService categoryService) {
         super(mapper, repository);
         this.blockService = blockService;
+        this.categoryService = categoryService;
     }
 
     @Override
@@ -72,7 +76,8 @@ public class TemplateServiceImpl extends AbstractService<TemplateMapper, Templat
 
     @Override
     public List<TemplateGetDTO> list(TemplateCriteria criteria) {
-        Pageable request = PageRequest.of(criteria.getPage(), criteria.getSize(), criteria.getSort(), criteria.getProperties().getValue());
+        Pageable request = PageRequest.of(criteria.getPage(), criteria.getSize(), criteria.getSort(),
+                criteria.getProperties().getValue());
         Page<TemplateEntity> entities = repository.findAll(request);
         return entities.stream().map(mapper::fromGetDTO).toList();
     }
@@ -106,5 +111,20 @@ public class TemplateServiceImpl extends AbstractService<TemplateMapper, Templat
             throw new InvalidValidationException("Invalid ID!");
         }
         return repository.existsById(id);
+    }
+
+    @Override
+    public List<TemplateTiDTO> tiTemplates(TemplateCriteria criteria) {
+        Pageable request = PageRequest.of(criteria.getPage(), criteria.getSize(), criteria.getSort(),
+                criteria.getProperties().getValue());
+        Page<TemplateEntity> entities = repository.findAll(request);
+        return entities.stream().map(this::returnTiDTO).toList();
+    }
+
+    private TemplateTiDTO returnTiDTO(TemplateEntity entity) {
+        TemplateTiDTO dto = new TemplateTiDTO();
+        BeanUtils.copyProperties(entity, dto);
+        dto.setCategory(categoryService.getCategoryTitle(entity.getCategoryId()));
+        return dto;
     }
 }

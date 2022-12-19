@@ -15,7 +15,7 @@ public interface TemplateMapper extends GenericMapper<TemplateCreateDTO, Templat
     @Override
     default TemplateGetDTO fromGetDTO(TemplateEntity entity) {
         try {
-            return new TemplateGetDTO(entity.getTitle(), entity.getHtml(), new JSONObject(), entity.getCategoryId(), entity.getPrice(), entity.getDownloadCount(), entity.getIsPremium(), entity.getIsActive());
+            return new TemplateGetDTO(entity.getTitle(), entity.getHtml(), entity.getFields(), entity.getCategoryId(), entity.getImagePath(), entity.getPrice(), entity.getDownloadCount(), entity.getIsPremium(), entity.getIsActive());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -24,16 +24,16 @@ public interface TemplateMapper extends GenericMapper<TemplateCreateDTO, Templat
 
     @Override
     default TemplateEntity toUpdateDTO(TemplateUpdateDTO dto) {
-        return new TemplateEntity(dto.getTitle(), dto.getHtml(), dto.getFields(), dto.getCategoryId(), dto.getPrice(), dto.getDownloadCount(), dto.getIsPremium(), dto.getIsActive());
+        return new TemplateEntity(dto.getTitle(), dto.getHtml(), dto.getFields(), dto.getCategoryId(), dto.getImagePath(), dto.getPrice(), dto.getDownloadCount(), dto.getIsPremium(), dto.getIsActive());
     }
 
     @Override
     default TemplateUpdateDTO fromUpdateDTO(TemplateEntity entity) {
-        return new TemplateUpdateDTO(entity.getTitle(), entity.getHtml(), entity.getFields(), entity.getCategoryId(), entity.getPrice(), entity.getDownloadCount(), entity.getIsPremium(), entity.getIsActive());
+        return new TemplateUpdateDTO(entity.getTitle(), entity.getHtml(), entity.getFields(), entity.getCategoryId(), entity.getImagePath(), entity.getPrice(), entity.getDownloadCount(), entity.getIsPremium(), entity.getIsActive());
     }
 
     @Override
     default TemplateEntity toGetDTO(TemplateGetDTO dto) {
-        return new TemplateEntity(dto.getTitle(), dto.getHtml(), dto.getFields().toString(), dto.getCategoryId(), dto.getPrice(), dto.getDownloadCount(), dto.getIsPremium(), dto.getIsActive());
+        return new TemplateEntity(dto.getTitle(), dto.getHtml(), dto.getFields(), dto.getCategoryId(), dto.getImagePath(), dto.getPrice(), dto.getDownloadCount(), dto.getIsPremium(), dto.getIsActive());
     }
 }

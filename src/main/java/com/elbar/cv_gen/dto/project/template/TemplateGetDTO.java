@@ -11,13 +11,16 @@ import org.springframework.boot.configurationprocessor.json.JSONObject;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TemplateGetDTO extends GenericDTO {
+
     private String title;
 
     private String html;
 
-    private JSONObject fields;
+    private String fields;
 
     private Integer categoryId;
+
+    private String imagePath;
 
     private Long price;
 
